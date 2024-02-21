@@ -127,9 +127,9 @@ export const calculatePosition = (referencePoints, distances) => {
   const l = 2*g*h + 2*i*j;
   const m = g**2 + i**2 - qTq;
 
-  console.log("k: ", k);
-  console.log("l: ", l);
-  console.log("m: ", m);
+  //console.log("k: ", k);
+  //console.log("l: ", l);
+  //console.log("m: ", m);
 
   // Solve for both solutions of q₃
   let discriminant = l**2 - 4*k*m;
@@ -148,12 +148,12 @@ export const calculatePosition = (referencePoints, distances) => {
     imaginaryPart = Math.sqrt(-discriminant) / (2*k);
     q3first = realPart + imaginaryPart;
     q3second = realPart - imaginaryPart;
-    console.log("Solutions for q₃ real part: ", realPart);
-    console.log("Solutions for q₃ imaginary part: ", imaginaryPart);
+    //console.log("Solutions for q₃ real part: ", realPart);
+    //console.log("Solutions for q₃ imaginary part: ", imaginaryPart);
   }
 
-  console.log("First Solution for q₃: ", q3first.toFixed(4));
-  console.log("Second Solution for q₃: ", q3second.toFixed(4));
+  //console.log("First Solution for q₃: ", q3first.toFixed(4));
+  //console.log("Second Solution for q₃: ", q3second.toFixed(4));
 
   // Calculate both solutions for q₁ and q₂ using the solutions found for q₃
   const q1first = g + h*q3first;
@@ -163,14 +163,24 @@ export const calculatePosition = (referencePoints, distances) => {
 
   // Return the two solutions for the target position
   const q = [q1first + c.get([0,0]), q2first + c.get([1,0]), q3first + c.get([2,0])];
-  console.log("First Solution: ", q.map((val) => val.toFixed(4)));
+  //console.log("First Solution: ", q.map((val) => val.toFixed(4)));
   const q2 = [q1second + c.get([0,0]), q2second + c.get([1,0]), q3second + c.get([2,0])];
-  console.log("Second Solution: ", q2.map((val) => val.toFixed(4)));
+  //console.log("Second Solution: ", q2.map((val) => val.toFixed(4)));
 
   const endTime = performance.now();
   const timeTaken = endTime - startTime;
 
-  console.log(`Time taken: ${timeTaken}ms`);
+  console.log(`Position Computed in ${timeTaken}ms`);
 
   return [q, q2];
+}
+
+// Function to reduce the array of 3D positions to a single 2 dimension position
+export const reduceToTwoDimensions = (positions) => {
+  // Return the x and y coordinates of the position that has a positive z value
+  if(positions[0][2] > 0) {
+    return [positions[0][0], positions[0][1]];
+  } else {
+    return [positions[1][0], positions[1][1]];
+  }
 }
