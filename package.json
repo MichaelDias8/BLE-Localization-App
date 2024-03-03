@@ -10,9 +10,11 @@
   },
   "dependencies": {
     "@expo/webpack-config": "~19.0.1",
+    "eas": "^0.1.0",
     "expo": "~50.0.6",
     "expo-status-bar": "~1.11.1",
     "kalman-filter": "^2.3.0",
+    "kalmanjs": "^1.1.0",
     "mathjs": "^12.3.2",
     "react": "18.2.0",
     "react-dom": "18.2.0",
