@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 
-export const NumberLine = ({ measuredDistance, computedDistance }) => {
+export const NumberLine = ({ measuredDistance, computedDistance, color}) => {
   const lineWidth = 350; // Total width of the number line
   const maxDistance = 10; // Maximum distance represented on the number line
   const measuredPointPosition = (measuredDistance / maxDistance) * lineWidth;
@@ -25,7 +25,7 @@ export const NumberLine = ({ measuredDistance, computedDistance }) => {
         ))}
       </View>
       {/* Measured Distance Point */}
-      <View style={[styles.point, { left: measuredPointPosition - 5 /* Adjusting to center the point */, backgroundColor: 'blue' }]} />
+      <View style={[styles.point, { left: measuredPointPosition - 5 /* Adjusting to center the point */, backgroundColor: color }]} />
       {/* Computed Distance Point */}
       <View style={[styles.point, { left: computedPointPosition - 5 /* Adjusting to center the point */, backgroundColor: 'red' }]} />
     </View>

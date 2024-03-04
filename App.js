@@ -5,10 +5,10 @@ import Svg, { Circle, Text as SvgText } from 'react-native-svg';
 import { BleManager } from 'react-native-ble-plx';
 import { rssiToDistance, BEACON_1_UUID, BEACON_2_UUID, BEACON_3_UUID, beaconCoords, beaconVariances, beaconAdvertisingFrequency} from './beaconUtilities';
 import { calculatePosition, reduceToTwoDimensions } from './positioningUtilities';
-import { ConstantPosition1DKFilterOptions, ConstantPosition2DKFilterOptions, ConstantPositionInitialCovariance } from './kalmanFilterUtilities';
+import { ConstantPosition2DKFilterOptions, ConstantPositionInitialCovariance } from './kalmanFilterUtilities';
 import { calculateMean, calculateVariance } from './statsUtilities';
 import { NumberLine } from './NumberLine';
-//import { KalmanFilter } from 'kalman-filter';
+import { KalmanFilter as KF } from 'kalman-filter';
 import KalmanFilter from 'kalmanjs';
 
 // Request Bluetooth Permission
@@ -44,6 +44,8 @@ requestBluetoothPermission = async () => {
 }
 requestBluetoothPermission();
 
+
+var colors = ['blue', 'green', 'magenta', 'yellow', 'purple', 'orange', 'pink', 'brown', 'cyan'];
 // Initialize the ble manager and Kalman Filter
 const bleManager = new BleManager();
 var kf = {
@@ -51,20 +53,27 @@ var kf = {
   [BEACON_2_UUID]: null,
   [BEACON_3_UUID]: null,
 };
+var kf2D = null;
 
 export default function App() {
-  // State values
+  // STATE
+  const [errorMessage, setErrorMessage] = useState(''); // Error message state
   const [previousState, setPreviousState] = useState(null); // State of Kalman Filter
-  const [beaconLastAdvTime, setBeaconLastAdvTime] = useState({    // State of 1D Kalman Filters 
-    [BEACON_1_UUID]: null,
-    [BEACON_2_UUID]: null,
-    [BEACON_3_UUID]: null,
-  });
   const [beaconDistances, setBeaconDistances] = useState({
     [BEACON_1_UUID]: 0,
     [BEACON_2_UUID]: 0,
     [BEACON_3_UUID]: 0,
   });
+  const [beaconLastAdvTime, setBeaconLastAdvTime] = useState({ // Timestamp of last advertisement
+    [BEACON_1_UUID]: null,
+    [BEACON_2_UUID]: null,
+    [BEACON_3_UUID]: null,
+  });
+  const [beaconIndicatorColors, setBeaconIndicatorColors] = useState({ // Indicator colors for each beacon
+    [BEACON_1_UUID]: 'blue',
+    [BEACON_2_UUID]: 'blue',
+    [BEACON_3_UUID]: 'blue',
+  })
   const [filteredDistances, setFilteredDistances] = useState({
     [BEACON_1_UUID]: 0,
     [BEACON_2_UUID]: 0,
@@ -76,14 +85,7 @@ export default function App() {
     [BEACON_3_UUID]: [],
   });
   const [measuredPosition, setMeasuredPosition] = useState([0, 0]);
-  const [userCoordinates, setUserCoordinates] = useState({ x: 0, y: 0 });
-  const [showMeasurement, setShowMeasurement] = useState(true); //show the measured position circle
-  const [beaconStates, setBeaconStates] = useState({
-    [BEACON_1_UUID]: 'Scanning...',
-    [BEACON_2_UUID]: 'Scanning...',
-    [BEACON_3_UUID]: 'Scanning...',
-  });
-  
+  const [userCoordinates, setUserCoordinates] = useState({ x: 0, y: 0 });  
   const [isRecording, setIsRecording] = useState(false);
   const [recordedStats, setRecordedStats] = useState({
     [BEACON_1_UUID]: { mean: 0, variance: 0 },
@@ -96,14 +98,144 @@ export default function App() {
     [BEACON_3_UUID]: [],
   }); 
 
-  // Refs for state values
+  // REFS
   const beaconDistancesRef = useRef(beaconDistances);
+  const filteredDistancesRef = useRef(filteredDistances);
   const initalBeaconDistancesRef = useRef(initialBeaconDistances);
   const isRecordingRef = useRef(isRecording);
-  const beaconStatesRef = useRef(beaconStates);
   const beaconLastAdvTimeRef = useRef(beaconLastAdvTime);
+  
+  // REF EFFECTS
+  useEffect(() => {
+    beaconDistancesRef.current = beaconDistances; 
+  }, [beaconDistances]);
+  useEffect(() => {
+    isRecordingRef.current = isRecording;      
+  }, [isRecording]);
+  useEffect(() => {
+    initalBeaconDistancesRef.current = initialBeaconDistances;      
+  }, [initialBeaconDistances]);
+  useEffect(() => {
+    beaconLastAdvTimeRef.current = beaconLastAdvTime;      
+  }, [beaconLastAdvTime]);
+  useEffect(() => {
+    filteredDistancesRef.current = filteredDistances;      
+  }, [filteredDistances]);
+  // Effect to start bluetooth scan and Kalman Filter
+  useEffect(() => {
+    scanForBeacons();
+    // Set up the interval using a function that references the latest beaconDistances through the ref
+    const interval = setInterval(() => {
+      updatePositionWith2DKFilter(beaconDistancesRef.current, initalBeaconDistancesRef.current);
+    }, 500);
+    return () => {
+      clearInterval(interval);
+      bleManager.stopDeviceScan();
+    };
+  }, []);
 
-  // Recording Event Handlers
+  // FUNCTIONS
+  // Listen for beacon advertisements and update the beacon distances
+  const scanForBeacons = async () => {
+    bleManager.startDeviceScan(null, null, (error, device) => {
+      if (error) {
+        console.log('Error: ', error);
+        return;
+      }
+      if (device.name === 'Test beacon') {
+        // Get the UUID of the beacon
+        let uuid = device.serviceUUIDs[0];
+        // If recording, add the RSSI value from the beacon to the recorded data
+        if (isRecordingRef.current) {
+          setRecordedRSSIS(prevData => {
+            const newRSSIData = {
+              ...prevData,
+              [uuid]: [...prevData[uuid], device.rssi],
+            };
+            return newRSSIData;
+          });
+        }
+        // If the initial distance array is not full, add the current distance to it
+        if (initalBeaconDistancesRef.current[uuid].length < 10) {
+          setInitialBeaconDistances(prevData => {
+            const newDistances = {
+              ...prevData,
+              [uuid]: [...prevData[uuid], rssiToDistance(device.rssi, uuid)],
+            };
+            return newDistances;
+          });
+        }
+        // Update the distance, timestamp, and beacon indicators
+        setBeaconDistances(prevDistance => ({...prevDistance, [uuid]: rssiToDistance(device.rssi, uuid)}));
+        setBeaconLastAdvTime(prevTimers => ({...prevTimers, [uuid]: performance.now()}));
+        setBeaconIndicatorColors(prevColors => ({
+          ...prevColors,
+          [uuid]: colors[colors.indexOf(prevColors[uuid]) + 1] || 'blue',
+        }));
+        
+        // Update the computed distance with the 1D Kalman Filter
+        updatePositionWith1DKFilters(uuid, beaconDistancesRef.current, beaconLastAdvTimeRef.current, initalBeaconDistancesRef.current);        
+      }
+    });
+  };
+
+  const updatePositionWith1DKFilters = (beaconId, beaconDistances, beaconLastAdvTime, initBeaconDistances) => {
+    let processNoise = 0.01;  
+    // If the Kalman Filter has been initialized for the current beacon then filter the distance measurement
+    if (kf[beaconId]){
+      // Update the property of the kf object for the current beacon based on the beaconLastAdvTime state  
+      kf[beaconId].setProcessNoise(processNoise*(performance.now() - beaconLastAdvTime[beaconId])/beaconAdvertisingFrequency);
+      // Run the Kalman Filter for the current beacon
+      const computedPosition = kf[beaconId].filter(beaconDistances[beaconId]);
+      // Update filtered distances state with the new estimated position
+      setFilteredDistances(prevDistances => ({...prevDistances, [beaconId]: computedPosition}));
+    } // Initialize the kalman filter if the inital measurements are complete 
+    else if (initBeaconDistances[beaconId].length == 10){
+      console.log(`Initializing Kalman Filter for beacon ${beaconId}...`);
+      const mean = calculateMean(initBeaconDistances[beaconId]);
+      const variance = calculateVariance(initBeaconDistances[beaconId], mean);
+      //Update the property of the kf object for the current beacon
+      kf[beaconId] = new KalmanFilter({R: processNoise, Q: beaconVariances[beaconId], x: mean});
+    }
+  };
+
+  const updatePositionWith2DKFilter = (filteredDistances, initBeaconDistances) => {
+    // If all beacons are not detected, do not update the user position
+    if (Object.values(beaconDistances).includes(0)) {
+      return;
+    }
+    // Initialize the 2D KF if measurements are complete
+    if(initBeaconDistances[BEACON_1_UUID].length == 10 && initBeaconDistances[BEACON_2_UUID].length == 10 
+    && initBeaconDistances[BEACON_3_UUID].length == 10 && !kf2D){
+    console.log('Initializing 2D Kalman Filter...');
+      initialPosition = reduceToTwoDimensions(calculatePosition(beaconCoords, filteredDistances));
+      setErrorMessage(`Initial Position: ${initialPosition}`);
+      ConstantPosition2DKFilterOptions.dynamic.init = {
+        mean: [[initialPosition[0]], [initialPosition[1]]],
+        covariance: ConstantPositionInitialCovariance,
+      };
+      kf2D = new KF(ConstantPosition2DKFilterOptions);
+    }else if (kf2D){ // Update Kalman Filter if its initialized
+      const observation = reduceToTwoDimensions(calculatePosition(beaconCoords, filteredDistances));
+      setMeasuredPosition(observation);
+      const startTime = performance.now();
+      const predictedState = kf2D.predict({previousCorrected: previousState}); // Predict the next state
+      // If the observation is within 20 meters of the predicted state, correct using the measurement vector
+      if(Math.abs(observation[0] - predictedState.mean[0][0]) < 14.14 && Math.abs(observation[1] - predictedState.mean[1][0]) < 14.14){
+        const correctedState = kf2D.correct({observation: observation, predicted: predictedState}); // Correct using the measurement vector
+        setPreviousState(correctedState); // Update the previous state
+        // Update userCoordinates state with the new estimated position
+        setUserCoordinates({
+          x: Math.round(correctedState.mean[0][0] * 1000) / 1000, // correctedState.mean = [x, y]
+          y: Math.round(correctedState.mean[1][0] * 1000) / 1000, // Round to 2 decimal places
+        });
+      }
+      const endTime = performance.now();
+      const timeTaken = endTime - startTime;
+      console.log(`Kalman Filter Computed in ${timeTaken}ms`);
+    }
+  };
+
   const startRecording = () => {
     console.log('Recording Started');
     setIsRecording(true);
@@ -133,168 +265,8 @@ export default function App() {
       }));
     });
   };
-  
-  // Effects to update refs with the latest state values
-  useEffect(() => {
-    beaconDistancesRef.current = beaconDistances; 
-  }, [beaconDistances]);
-  useEffect(() => {
-    beaconStatesRef.current = beaconStates;     
-  }, [beaconStates]);
-  useEffect(() => {
-    isRecordingRef.current = isRecording;      
-  }, [isRecording]);
-  useEffect(() => {
-    initalBeaconDistancesRef.current = initialBeaconDistances;      
-  }, [initialBeaconDistances]);
-  useEffect(() => {
-    beaconLastAdvTimeRef.current = beaconLastAdvTime;      
-  }, [beaconLastAdvTime]);
 
-  // Effect to begin scanning for beacons and updating the user position
-  useEffect(() => {
-    scanForBeacons();
-    // Set up the interval using a function that references the latest beaconDistances through the ref
-    const interval = setInterval(() => {
-      //updatePositionWith2DKFilter(beaconDistancesRef.current);
-    }, 500);
-    return () => {
-      clearInterval(interval);
-      bleManager.stopDeviceScan();
-    };
-  }, []); // Only run once
-
-  // Function to start scanning for beacons and update the beacon states and RSSI values
-  const scanForBeacons = async () => {
-    let beaconTimeouts = {};
-  
-    bleManager.startDeviceScan(null, null, (error, device) => {
-      if (error) {
-        console.log('Error: ', error);
-        return;
-      }
-      if (device.name === 'Test beacon') {
-        // Get the UUID of the beacon
-        let uuid = device.serviceUUIDs[0];
-        // If recording, add the RSSI value from the beacon to the recorded data
-        if (isRecordingRef.current) {
-          setRecordedRSSIS(prevData => {
-            const newRSSIData = {
-              ...prevData,
-              [uuid]: [...prevData[uuid], device.rssi],
-            };
-            return newRSSIData;
-          });
-        }
-        // If the initial distance array is not full, add the current distance to it
-        if (initalBeaconDistancesRef.current[uuid].length < 10) {
-          setInitialBeaconDistances(prevData => {
-            const newDistances = {
-              ...prevData,
-              [uuid]: [...prevData[uuid], rssiToDistance(device.rssi, uuid)],
-            };
-            return newDistances;
-          });
-        }
-        // Update the status and distance of the found beacon
-        setBeaconStates(prevStatus => ({
-          ...prevStatus,
-          [uuid]: 'Detected',
-        }));
-        setBeaconDistances(prevDistance => {
-          const newDistance = {
-            ...prevDistance,
-            [uuid]: rssiToDistance(device.rssi, uuid),
-          };
-          return newDistance;
-        });
-        // Update the beacon timestamp to the current time
-        setBeaconLastAdvTime(prevTimers => ({
-          ...prevTimers,
-          [uuid]: performance.now(),
-        }));
-        
-        // Update the computed distance with the 1D Kalman Filter
-        //updatePositionWith1DKFilters(uuid, beaconDistancesRef.current, beaconLastAdvTimeRef.current, initalBeaconDistancesRef.current);        
-        
-        // Clear any existing timeout for this beacon and set a new one to reset the beacon state after 2 seconds
-        if (beaconTimeouts[uuid]) {
-          clearTimeout(beaconTimeouts[uuid]);
-        }
-        // Set a new timeout to reset the beacon state after 2 seconds
-        beaconTimeouts[uuid] = setTimeout(() => {
-          setBeaconStates(prevStatus => ({
-            ...prevStatus,
-            [uuid]: 'Not Detected',
-          }));
-        }, 2000);
-      }
-    });
-  };
-
-  const updatePositionWith1DKFilters = (beaconId, beaconDistances, beaconLastAdvTime, initBeaconDistances) => {
-    let processNoise = 0.01;
-    if (kf[beaconId] !== null) {
-      console.log(`kf for beacon ${beaconId.substring(0, 3)} x: ${kf[beaconId].x} cov: ${kf[beaconId].cov}`);
-    }    
-    // If the Kalman Filter has been initialized for the current beacon then filter the distance measurement
-    if (kf[beaconId]){
-      // Update the property of the kf object for the current beacon based on the beaconLastAdvTime state  
-      kf[beaconId].setProcessNoise(processNoise*(performance.now() - beaconLastAdvTime[beaconId])/beaconAdvertisingFrequency);
-      // Run the Kalman Filter for the current beacon
-      const computedPosition = kf[beaconId].filter(beaconDistances[beaconId]);
-      // Update filtered distances state with the new estimated position
-      setFilteredDistances(prevDistances => ({...prevDistances, [beaconId]: computedPosition}));
-    } // Initialize the kalman filter when the inital measurements are complete 
-    else if (initBeaconDistances[beaconId].length == 10){
-      console.log(`Initializing Kalman Filter for beacon ${beaconId}...`);
-      const mean = calculateMean(initBeaconDistances[beaconId]);
-      const variance = calculateVariance(initBeaconDistances[beaconId], mean);
-      //Update the property of the kf object for the current beacon
-      kf[beaconId] = new KalmanFilter({R: processNoise, Q: beaconVariances[beaconId], x: mean});
-    }
-  };
-
-  const updatePositionWith2DKFilter = (beaconDistances) => {
-    // If all beacons are not detected, do not update the user position
-    if (Object.values(beaconStatesRef.current).some(status => status !== 'Detected')) return;
-    
-    // If the Kalman Filter has not been initialized, initialize it with the first measurement
-    if (!kf) {
-      console.log('Initializing 2D Kalman Filter...');
-      const distances = beaconDistances;
-      initialPosition = reduceToTwoDimensions(calculatePosition(beaconCoords, distances));
-      ConstantPosition2DKFilterOptions.dynamic.init = {
-        mean: [[initialPosition[0]], [initialPosition[1]]],
-        covariance: ConstantPositionInitialCovariance,
-      };
-      kf = new KalmanFilter(ConstantPosition2DKFilterOptions);
-    }else{
-      // Convert RSSI values to distances
-      const distances = beaconDistances;
-      // Assuming you have a function to convert distances to a measurement vector
-      const observation = reduceToTwoDimensions(calculatePosition(beaconCoords, distances));
-      setMeasuredPosition(observation);
-      const startTime = performance.now();
-      const predictedState = kf.predict({previousCorrected: previousState}); // Predict the next state
-      // If the observation is within 20 meters of the predicted state, correct using the measurement vector
-      if(Math.abs(observation[0] - predictedState.mean[0][0]) < 14.14 && Math.abs(observation[1] - predictedState.mean[1][0]) < 14.14){
-        const correctedState = kf.correct({observation: observation, predicted: predictedState}); // Correct using the measurement vector
-        setPreviousState(correctedState); // Update the previous state
-        // Update userCoordinates state with the new estimated position
-        setUserCoordinates({
-          x: Math.round(correctedState.mean[0][0] * 1000) / 1000, // correctedState.mean = [x, y]
-          y: Math.round(correctedState.mean[1][0] * 1000) / 1000, // Round to 2 decimal places
-        });
-      }
-      const endTime = performance.now();
-      const timeTaken = endTime - startTime;
-
-      console.log(`Kalman Filter Computed in ${timeTaken}ms`);
-    }
-  };
-
-  // Set up canvas size and scaling function
+  // CANVAS SETUP
   const canvasSize = { width: 300, height: 300 };
   // Function to scale beacon coordinates to canvas size
   const scaleToCanvas = (coord) => {
@@ -315,15 +287,27 @@ export default function App() {
     <View style={styles.container}>
       <View>
         <Text style={styles.beaconName}>Beacon 1:</Text>
-          <NumberLine measuredDistance={beaconDistances[BEACON_1_UUID].toFixed(3)} computedDistance={filteredDistances[BEACON_1_UUID].toFixed(3)}/>
+          <NumberLine 
+            measuredDistance={beaconDistances[BEACON_1_UUID].toFixed(3)} 
+            computedDistance={filteredDistances[BEACON_1_UUID].toFixed(3)}
+            color = {beaconIndicatorColors[BEACON_1_UUID]}
+          />
       </View>
       <View>
         <Text style={styles.beaconName}>Beacon 2:</Text>
-        <NumberLine measuredDistance={beaconDistances[BEACON_2_UUID].toFixed(3)} computedDistance={filteredDistances[BEACON_2_UUID].toFixed(3)}/>
+        <NumberLine 
+          measuredDistance={beaconDistances[BEACON_2_UUID].toFixed(3)} 
+          computedDistance={filteredDistances[BEACON_2_UUID].toFixed(3)}
+          color = {beaconIndicatorColors[BEACON_2_UUID]}
+        />
       </View>
       <View>
         <Text style={styles.beaconName}>Beacon 3:</Text>
-        <NumberLine measuredDistance={beaconDistances[BEACON_3_UUID].toFixed(3)} computedDistance={filteredDistances[BEACON_3_UUID].toFixed(3)}/>
+        <NumberLine 
+          measuredDistance={beaconDistances[BEACON_3_UUID].toFixed(3)} 
+          computedDistance={filteredDistances[BEACON_3_UUID].toFixed(3)}
+          color = {beaconIndicatorColors[BEACON_3_UUID]}
+        />
       </View>
       <Svg height={canvasSize.height} width={canvasSize.width} style={styles.mapContainer}>
         {beaconCoords.map((coord, index) => {
@@ -338,7 +322,7 @@ export default function App() {
                 fill="black"
                 fontSize="10"
               >
-                Beacon {index + 1} {beaconStates[uuid] == 'Detected' ? '' : '(Not Detected)'}
+                Beacon {index + 1} 
               </SvgText>
               <Circle
                 key={`beacon-${index}`}
@@ -364,10 +348,10 @@ export default function App() {
           r="5"
           fill="red"
         />
-        {showMeasurement && (
+        {true && (
         <Circle
-          cx={scaledMeasuredPosition.x } // Use the calculated position
-          cy={scaledMeasuredPosition.y } // Use the calculated position
+          cx={scaledMeasuredPosition.x }
+          cy={scaledMeasuredPosition.y }
           r="5"
           stroke="green"
           strokeWidth="3"
@@ -401,6 +385,11 @@ export default function App() {
           User Position: {userCoordinates.x}, {userCoordinates.y}
         </Text>
       </View>
+      <View style={styles.userPositionContainer}>
+        <Text style={styles.userPositionText}>
+          Error: {errorMessage}
+        </Text>
+      </View>
       <View style={styles.buttonContainer}>
         <Button title="Start Recording" onPress={startRecording} disabled={isRecording} />
         <Button title="Stop Recording" onPress={stopRecording} disabled={!isRecording} />
@@ -419,7 +408,6 @@ export default function App() {
       </View>
       <StatusBar style="auto"/>
     </View>
-
   );
 } 
 
@@ -451,9 +439,8 @@ const styles = StyleSheet.create({
     textAlign: 'right',
   },
   userPositionContainer: {
-    alignItems: 'center', // Center align items horizontally in the container
-    justifyContent: 'center', // Center content vertically in the container
-    marginTop: 0, // Optional: adds some space above the user position text
+    alignItems: 'center', 
+    justifyContent: 'center', 
   },
   buttonContainer: {
     flexDirection: 'row',
