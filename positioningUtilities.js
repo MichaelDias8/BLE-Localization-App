@@ -10,9 +10,13 @@ const I = identity(3);
 // Function to calculate the position of the target
 // @param referencePoints: an array of arrays containing the coordinates of the reference points
 // @param distances: an array of distances from the target to each reference point
-export const calculatePosition = (referencePoints, distances) => {
+export const calculatePosition = (referencePoints, distancesObject) => {
   const startTime = performance.now();
-
+  // Convert distances to a 2D array
+  let distances = [];
+  for (let distance in distancesObject) {
+    distances.push(distancesObject[distance]);
+  }
   //log the input data
   //console.log("Reference Points: ", referencePoints);
   //console.log("Distances: ", distances);
@@ -170,7 +174,7 @@ export const calculatePosition = (referencePoints, distances) => {
   const endTime = performance.now();
   const timeTaken = endTime - startTime;
 
-  console.log(`Position Computed in ${timeTaken}ms`);
+  console.log(`Position Computed in ${timeTaken.toFixed(0)}ms`);
 
   return [q, q2];
 }

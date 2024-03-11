@@ -10,6 +10,8 @@ import { calculateMean, calculateVariance } from './statsUtilities';
 import { NumberLine } from './NumberLine';
 import { KalmanFilter as KF } from 'kalman-filter';
 import KalmanFilter from 'kalmanjs';
+import { Accelerometer, Gyroscope, Magnetometer } from 'expo-sensors';
+
 
 // Request Bluetooth Permission
 requestBluetoothPermission = async () => {
@@ -57,46 +59,49 @@ var kf2D = null;
 
 export default function App() {
   // STATE
-  const [errorMessage, setErrorMessage] = useState(''); // Error message state
-  const [previousState, setPreviousState] = useState(null); // State of Kalman Filter
-  const [beaconDistances, setBeaconDistances] = useState({
+  const [accelerometerData, setAccelerometerData] = useState({ x: 0, y: 0, z: 0 });
+  const [gyroscopeData, setGyroscopeData] = useState({ x: 0, y: 0, z: 0 });
+  const [magnetometerData, setMagnetometerData] = useState({ x: 0, y: 0, z: 0 });
+  const [beaconDistances, setBeaconDistances] = useState({  // Measured distances
     [BEACON_1_UUID]: 0,
     [BEACON_2_UUID]: 0,
     [BEACON_3_UUID]: 0,
   });
-  const [beaconLastAdvTime, setBeaconLastAdvTime] = useState({ // Timestamp of last advertisement
+  const [beaconLastAdvTime, setBeaconLastAdvTime] = useState({ // Timestamps of last advertisement
     [BEACON_1_UUID]: null,
     [BEACON_2_UUID]: null,
     [BEACON_3_UUID]: null,
   });
-  const [beaconIndicatorColors, setBeaconIndicatorColors] = useState({ // Indicator colors for each beacon
+  const [beaconIndicatorColors, setBeaconIndicatorColors] = useState({ // Indicator colors of each beacon
     [BEACON_1_UUID]: 'blue',
     [BEACON_2_UUID]: 'blue',
     [BEACON_3_UUID]: 'blue',
   })
-  const [filteredDistances, setFilteredDistances] = useState({
+  const [filteredDistances, setFilteredDistances] = useState({  // Smoothed distances
     [BEACON_1_UUID]: 0,
     [BEACON_2_UUID]: 0,
     [BEACON_3_UUID]: 0,
   });
-  const [initialBeaconDistances, setInitialBeaconDistances] = useState({
+  const [initialBeaconDistances, setInitialBeaconDistances] = useState({  
     [BEACON_1_UUID]: [],
     [BEACON_2_UUID]: [],
     [BEACON_3_UUID]: [],
-  });
-  const [measuredPosition, setMeasuredPosition] = useState([0, 0]);
-  const [userCoordinates, setUserCoordinates] = useState({ x: 0, y: 0 });  
-  const [isRecording, setIsRecording] = useState(false);
-  const [recordedStats, setRecordedStats] = useState({
-    [BEACON_1_UUID]: { mean: 0, variance: 0 },
-    [BEACON_2_UUID]: { mean: 0, variance: 0 },
-    [BEACON_3_UUID]: { mean: 0, variance: 0 },
   });
   const [recordedRSSIS, setRecordedRSSIS] = useState({
     [BEACON_1_UUID]: [],
     [BEACON_2_UUID]: [],
     [BEACON_3_UUID]: [],
   }); 
+  const [recordedStats, setRecordedStats] = useState({
+    [BEACON_1_UUID]: { mean: 0, variance: 0 },
+    [BEACON_2_UUID]: { mean: 0, variance: 0 },
+    [BEACON_3_UUID]: { mean: 0, variance: 0 },
+  });
+  const [isRecording, setIsRecording] = useState(false);
+  const [previousState, setPreviousState] = useState(null); // State of 2D Kalman Filter
+  const [measuredPosition, setMeasuredPosition] = useState([0, 0]);        // Measured position
+  const [userCoordinates, setUserCoordinates] = useState({ x: 0, y: 0 });  // Smoothed position
+  
 
   // REFS
   const beaconDistancesRef = useRef(beaconDistances);
@@ -104,6 +109,10 @@ export default function App() {
   const initalBeaconDistancesRef = useRef(initialBeaconDistances);
   const isRecordingRef = useRef(isRecording);
   const beaconLastAdvTimeRef = useRef(beaconLastAdvTime);
+  const previousStateRef = useRef(previousState);
+  const accelerometerSubscription = useRef(null); 
+  const gyroscopeSubscription = useRef(null);
+  const magnetometerSubscription = useRef(null);
   
   // REF EFFECTS
   useEffect(() => {
@@ -121,16 +130,65 @@ export default function App() {
   useEffect(() => {
     filteredDistancesRef.current = filteredDistances;      
   }, [filteredDistances]);
-  // Effect to start bluetooth scan and Kalman Filter
   useEffect(() => {
+    previousStateRef.current = previousState;      
+  }, [previousState]);
+  // Start BLE scanning and the kalman filter.
+  useEffect(() => {
+    // Start asyncronous ble scanning
     scanForBeacons();
-    // Set up the interval using a function that references the latest beaconDistances through the ref
+    // Start the 2D Kalman Filter 
     const interval = setInterval(() => {
-      updatePositionWith2DKFilter(beaconDistancesRef.current, initalBeaconDistancesRef.current);
+      updatePositionWith2DKFilter(previousStateRef.current, filteredDistancesRef.current, initalBeaconDistancesRef.current);
     }, 500);
+
+    // Clear data on exit
     return () => {
       clearInterval(interval);
       bleManager.stopDeviceScan();
+    };
+  }, []);
+  // Subscribe to accelerometer, gyroscrope, and magnetometer data 
+  useEffect(() => {
+    const subscribeToAccelerometer = () => {
+      Accelerometer.setUpdateInterval(250); // Set update interval to 1000 ms
+
+      // Assign the accelerometerSubscription to the current property of the ref
+      accelerometerSubscription.current = Accelerometer.addListener(accelerometerData => {
+        setAccelerometerData(accelerometerData);
+      });
+    };
+
+    const subscribeToGyroscope = () => {
+      Gyroscope.setUpdateInterval(250); // Set update interval to 1000 ms
+
+      // Assign the gyroscopeSubscription to the current property of the ref
+      gyroscopeSubscription.current = Gyroscope.addListener(gyroscopeData => {
+        setGyroscopeData(gyroscopeData);
+      });
+    };
+
+    const subscribeToMagnetometer = () => {
+      Magnetometer.setUpdateInterval(250); // Set update interval to 1000 ms
+
+      // Assign the magnetometerSubscription to the current property of the ref
+      magnetometerSubscription.current = Magnetometer.addListener(magnetometerData => {
+        setMagnetometerData(magnetometerData);
+      });
+    };
+
+    subscribeToAccelerometer();
+    subscribeToGyroscope();
+    subscribeToMagnetometer();
+
+    // Cleanup function to unsubscribe from the accelerometer data
+    return () => {
+      accelerometerSubscription.current && accelerometerSubscription.current.remove();
+      accelerometerSubscription.current = null;
+      gyroscopeSubscription.current && gyroscopeSubscription.current.remove();
+      gyroscopeSubscription.current = null;
+      magnetometerSubscription.current && magnetometerSubscription.current.remove();
+      magnetometerSubscription.current = null;
     };
   }, []);
 
@@ -174,42 +232,53 @@ export default function App() {
         }));
         
         // Update the computed distance with the 1D Kalman Filter
-        updatePositionWith1DKFilters(uuid, beaconDistancesRef.current, beaconLastAdvTimeRef.current, initalBeaconDistancesRef.current);        
+        updatePositionWith1DKFilters(uuid, beaconDistancesRef.current, filteredDistancesRef.current, beaconLastAdvTimeRef.current, initalBeaconDistancesRef.current);        
       }
     });
   };
 
-  const updatePositionWith1DKFilters = (beaconId, beaconDistances, beaconLastAdvTime, initBeaconDistances) => {
-    let processNoise = 0.01;  
+  const updatePositionWith1DKFilters = (beaconId, beaconDistances, filteredDistances, beaconLastAdvTime, initBeaconDistances) => {
+    let processNoise = 0.25;  
     // If the Kalman Filter has been initialized for the current beacon then filter the distance measurement
     if (kf[beaconId]){
-      // Update the property of the kf object for the current beacon based on the beaconLastAdvTime state  
+      console.log(`kf for beacon ${beaconId.substring(0, 3)} x: ${kf[beaconId].x.toFixed(1)} cov: ${kf[beaconId].cov.toFixed(2)}`);
+
+      // Update the process noise value based on the time since the last advertisement
       kf[beaconId].setProcessNoise(processNoise*(performance.now() - beaconLastAdvTime[beaconId])/beaconAdvertisingFrequency);
+      // Update the measurement noise value based on the difference between the measured and filtered distances
+      let measurementDifference = beaconDistances[beaconId] - filteredDistances[beaconId];
+      console.log(`Measured Distance for beacon ${beaconId.substring(0, 3)}: ${beaconDistances[beaconId]}`)
+      console.log(`Filtered Distance for beacon ${beaconId.substring(0, 3)}: ${filteredDistances[beaconId]}`);
+      let measurementNoise = 0;
+      if (measurementDifference > 0) // Measured distance is greater than filtered distance. 
+        measurementNoise = ((3.5 * beaconVariances[beaconId]) * Math.log10(measurementDifference + 1)) + 1;
+      else                         // Measured distance is less than filtered distance
+        measurementNoise = 1 / ((beaconVariances[beaconId] * -measurementDifference) + 1);
+      
+      
+      //console.log(`Measurement Noise for beacon ${beaconId.substring(0, 3)}: ${measurementNoise}`);
+      kf[beaconId].setMeasurementNoise(measurementNoise);
+
       // Run the Kalman Filter for the current beacon
       const computedPosition = kf[beaconId].filter(beaconDistances[beaconId]);
+
       // Update filtered distances state with the new estimated position
       setFilteredDistances(prevDistances => ({...prevDistances, [beaconId]: computedPosition}));
-    } // Initialize the kalman filter if the inital measurements are complete 
-    else if (initBeaconDistances[beaconId].length == 10){
+    }
+    else if (initBeaconDistances[beaconId].length == 5){  // Initialize the Kalman Filter if the initial distance array is full
       console.log(`Initializing Kalman Filter for beacon ${beaconId}...`);
       const mean = calculateMean(initBeaconDistances[beaconId]);
-      const variance = calculateVariance(initBeaconDistances[beaconId], mean);
       //Update the property of the kf object for the current beacon
       kf[beaconId] = new KalmanFilter({R: processNoise, Q: beaconVariances[beaconId], x: mean});
     }
   };
 
-  const updatePositionWith2DKFilter = (filteredDistances, initBeaconDistances) => {
-    // If all beacons are not detected, do not update the user position
-    if (Object.values(beaconDistances).includes(0)) {
-      return;
-    }
+  const updatePositionWith2DKFilter = (previousState, filteredDistances, initBeaconDistances) => {
     // Initialize the 2D KF if measurements are complete
     if(initBeaconDistances[BEACON_1_UUID].length == 10 && initBeaconDistances[BEACON_2_UUID].length == 10 
     && initBeaconDistances[BEACON_3_UUID].length == 10 && !kf2D){
     console.log('Initializing 2D Kalman Filter...');
       initialPosition = reduceToTwoDimensions(calculatePosition(beaconCoords, filteredDistances));
-      setErrorMessage(`Initial Position: ${initialPosition}`);
       ConstantPosition2DKFilterOptions.dynamic.init = {
         mean: [[initialPosition[0]], [initialPosition[1]]],
         covariance: ConstantPositionInitialCovariance,
@@ -232,7 +301,7 @@ export default function App() {
       }
       const endTime = performance.now();
       const timeTaken = endTime - startTime;
-      console.log(`Kalman Filter Computed in ${timeTaken}ms`);
+      console.log(`Kalman Filter Computed in ${timeTaken.toFixed(0)}ms`);
     }
   };
 
@@ -274,9 +343,9 @@ export default function App() {
     const xOffSet = 10;
     const yOffSet = 10;
     // Adjust the coordinate origin to the center of the canvas and apply scaling
-    const x = canvasSize.width - ((coord[0] + xOffSet)  * scale);
+    const x = ((coord[0] + xOffSet)  * scale);
     //invert the y axis
-    const y = canvasSize.height - ((coord[1] + yOffSet) * scale);
+    const y = ((coord[1] + yOffSet) * scale);
     return { x, y };
   };
   // Scale the user coordinates and measured coordinates to the canvas size
@@ -386,9 +455,16 @@ export default function App() {
         </Text>
       </View>
       <View style={styles.userPositionContainer}>
-        <Text style={styles.userPositionText}>
-          Error: {errorMessage}
-        </Text>
+        <Text>Accelerometer:</Text>
+        <Text>X: {accelerometerData.x.toFixed(3)} Y: {accelerometerData.y.toFixed(3)} Z: {accelerometerData.z.toFixed(3)}</Text>
+      </View>
+      <View style={styles.userPositionContainer}>
+        <Text>Gyroscope: </Text>
+        <Text>X: {accelerometerData.x.toFixed(2)} Y: {gyroscopeData.y.toFixed(2)} Z: {gyroscopeData.z.toFixed(2)}</Text>
+      </View>
+      <View style={styles.userPositionContainer}>
+        <Text>Magnetometer: </Text>
+        <Text>X: {magnetometerData.x.toFixed(0)} Y: {magnetometerData.y.toFixed(0)} Z: {magnetometerData.z.toFixed(0)}</Text>
       </View>
       <View style={styles.buttonContainer}>
         <Button title="Start Recording" onPress={startRecording} disabled={isRecording} />
