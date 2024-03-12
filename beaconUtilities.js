@@ -2,6 +2,7 @@
 export const BEACON_1_UUID = 'f4c06066-434e-42d2-8534-66f7c4fa7647'
 export const BEACON_2_UUID = 'c3fdbc17-3473-4ea3-9b1b-875a0d57737f'
 export const BEACON_3_UUID = '5bfd3d57-6491-49ee-8e83-cc7eff678d6f'
+export const beaconIds = [BEACON_1_UUID, BEACON_2_UUID, BEACON_3_UUID];
 // EMPIRICALLY DERIVED VALUES
 export const beaconVariances = {
   [BEACON_1_UUID]: 2, //
