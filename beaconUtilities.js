@@ -46,3 +46,5 @@ export const rssiToDistance = (BeaconRSSIVals, beacon_uuid) => {
     return distances;
   }
 };
+
+export const colors = ['blue', 'green', 'magenta', 'yellow', 'purple', 'orange', 'pink', 'brown', 'cyan'];
