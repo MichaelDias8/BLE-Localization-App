@@ -1,6 +1,10 @@
+// 1D Kalman Filter variables
+export const processNoise = 0.25;
+
+// 2D Kalman Filter variables
 const dt = 0.5;
-const huge = 100;
 const measurementVariance = 4;
+const processVariance = 0.1;
 const velocityVariance = dt**2*measurementVariance;
 
 // MODELS
@@ -14,8 +18,8 @@ export const ConstantPosition2DKFilterOptions = {
       [0, 1],
     ],
     covariance: [
-      [0.01, 0], // Small values indicating low process noise
-      [0, 0.01],
+      [processVariance, 0], // Small values indicating low process noise
+      [0, processVariance],
     ],
 
   },
@@ -82,7 +86,8 @@ export const ConstantVelocity3DKFilterOptions = {
 	}
 };
 
-// INITIAL COVARIANCE
+// INITIAL COVARIANCES
+const huge = 100;
 export const ConstantPositionInitialCovariance = [
   [huge, 0],
   [0, huge]
