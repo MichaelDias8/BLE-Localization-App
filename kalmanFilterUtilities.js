@@ -3,41 +3,38 @@ export const processNoise = 0.25;
 
 // 2D Kalman Filter variables
 const dt = 0.5;
-const measurementVariance = 4;
-const processVariance = 0.1;
-const velocityVariance = dt**2*measurementVariance;
+export const beaconMeasurementVariance = 4;
+export const IMUMeasurementVariance = 1;
+const processNoise2D = 2;
+const velocityVariance = dt**2*beaconMeasurementVariance;
 
-// MODELS
+// Beacon models
+// 2D Constant position model
 
-// 2D Constant position model discrete noise
-export const ConstantPosition2DKFilterOptions = {
+export const ConstantPosition2DKFOptions = {
   dynamic: {
-    dimension: 2,
+    init: {
+      mean: [0, 0],
+      covariance: [huge, huge],
+    },
     transition: [
       [1, 0],
       [0, 1],
     ],
-    covariance: [
-      [processVariance, 0], // Small values indicating low process noise
-      [0, processVariance],
-    ],
-
+    covariance: [processNoise2D * dt, processNoise2D * dt]
   },
   observation: {
-    dimension: 2,
+    dimension: 2, 
     stateProjection: [
       [1, 0],
       [0, 1],
     ],
-    covariance: [
-      [measurementVariance, 0], 
-      [0, measurementVariance]
-    ],
-  }
+    covariance: [beaconMeasurementVariance, beaconMeasurementVariance]
+  },
 };
 
-// 2D Constant velocity model discrete noise  
-export var ConstantVelocity2DKFilterOptions = {
+// 2D Constant velocity model 
+export var ConstantVelocity2DKFOptions = {
   dynamic: {
     dimension: 4,
     transition: [
@@ -59,7 +56,7 @@ export var ConstantVelocity2DKFilterOptions = {
       [1, 0, 0, 0],
       [0, 0, 1, 0],
     ],
-    covariance: [measurementVariance, measurementVariance],
+    covariance: [beaconMeasurementVariance, beaconMeasurementVariance],
   }
 };
 
@@ -86,19 +83,8 @@ export const ConstantVelocity3DKFilterOptions = {
 	}
 };
 
-// INITIAL COVARIANCES
-const huge = 100;
-export const ConstantPositionInitialCovariance = [
-  [huge, 0],
-  [0, huge]
-];
-
-export const ConstantVelocityInitialCovariance = [
-  [huge, 0, 0, 0],
-  [0, huge, 0, 0],
-  [0, 0, huge, 0],
-  [0, 0, 0, huge]
-];
+// 3D INS Model
+export const constantVelocity3DINS = {};
 
 // HELPERS
 function scalarMultiply2DArray(matrix, scalar) {
@@ -112,3 +98,17 @@ function scalarMultiply2DArray(matrix, scalar) {
   }
   return matrix;
 }
+
+// INITIAL COVARIANCES
+const huge = 100;
+export const ConstantPositionInitialCovariance = [
+  [huge, 0],
+  [0, huge]
+];
+
+export const ConstantVelocityInitialCovariance = [
+  [huge, 0, 0, 0],
+  [0, huge, 0, 0],
+  [0, 0, huge, 0],
+  [0, 0, 0, huge]
+];

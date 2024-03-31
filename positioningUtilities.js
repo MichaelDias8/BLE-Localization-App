@@ -4,10 +4,11 @@
 // http://vigir.missouri.edu/~gdesouza/Research/Conference_CDs/IEEE_IROS_2009/papers/0978.pdf
 
 import { dot, qr, add, subtract, transpose, multiply, zeros, divide, identity} from 'mathjs'
+import * as Location from 'expo-location';
 
 const I = identity(3);
 
-// Function to calculate the position of the target
+// Multilateration function 
 // @param referencePoints: an array of arrays containing the coordinates of the reference points
 // @param distances: an array of distances from the target to each reference point
 export const calculatePosition = (referencePoints, distancesObject) => {
@@ -174,17 +175,37 @@ export const calculatePosition = (referencePoints, distancesObject) => {
   const endTime = performance.now();
   const timeTaken = endTime - startTime;
 
-  console.log(`Position Computed in ${timeTaken.toFixed(0)}ms`);
+  //console.log(`Trilateration Completed in ${timeTaken.toFixed(0)}ms`);
 
   return [q, q2];
 }
 
-// Function to reduce the array of 3D positions to a single 2 dimension position
-export const reduceToTwoDimensions = (positions) => {
+// Function to reduce the array of 3D positions to a single 2D position
+export const reduceTo2D = (positions) => {
   // Return the x and y coordinates of the position that has a positive z value
   if(positions[0][2] > 0) {
     return [positions[0][0], positions[0][1]];
   } else {
     return [positions[1][0], positions[1][1]];
   }
+}
+
+export async function getCurrentGPSLocation(setGPSCoordinates) {
+  const { status } = await Location.requestForegroundPermissionsAsync();
+  if (status === 'granted') {
+    const location = await Location.getCurrentPositionAsync({});
+    setGPSCoordinates(location);
+  }
+}
+
+const bounds = [0, 0, 10, 10];
+
+export const clampUserPosition = (x, y) => {
+  let minX = bounds[0];
+  let minY = bounds[1];
+  let maxX = bounds[2];
+  let maxY = bounds[3];
+  x = Math.min(Math.max(x, minX), maxX);
+  y = Math.min(Math.max(y, minY), maxY);
+  return [x, y];
 }

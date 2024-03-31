@@ -2,6 +2,8 @@
 export const BEACON_1_UUID = 'f4c06066-434e-42d2-8534-66f7c4fa7647'
 export const BEACON_2_UUID = 'c3fdbc17-3473-4ea3-9b1b-875a0d57737f'
 export const BEACON_3_UUID = '5bfd3d57-6491-49ee-8e83-cc7eff678d6f'
+// Beacon UUIDs
+export const beaconUUIDs = [BEACON_1_UUID, BEACON_2_UUID, BEACON_3_UUID];
 export const beaconIds = [BEACON_1_UUID, BEACON_2_UUID, BEACON_3_UUID];
 // EMPIRICALLY DERIVED VALUES
 export const beaconVariances = {
@@ -17,9 +19,9 @@ const RSSISAT1M = {
 }
 // COORDINATES
 export const beaconCoords = [
-  [0, 0, 0],              // Beacon 1  0 3 1 3
-  [-0.19, 6.225, 0],      // Beacon 2  2 2 3 
-  [-1.1, 6.225, 0]        // Beacon 3
+  [5.00, 0.00, 0.00],      // Beacon 1  
+  [6.19, 6.10, 0.00],      // Beacon 2  
+  [5.10, 6.10, 0.00]       // Beacon 3
 ];
 
 // Beacon advertising frequency in ms
