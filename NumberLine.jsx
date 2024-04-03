@@ -3,7 +3,7 @@ import { View, Text, StyleSheet } from 'react-native';
 
 export const NumberLine = ({ measuredDistance, computedDistance, color}) => {
   const lineWidth = 350; // Total width of the number line
-  const maxDistance = 10; // Maximum distance represented on the number line
+  const maxDistance = 20; // Maximum distance represented on the number line
   const measuredPointPosition = (measuredDistance / maxDistance) * lineWidth;
   const computedPointPosition = (computedDistance / maxDistance) * lineWidth;
   const ticks = Array.from({ length: maxDistance + 1 }, (_, i) => i); // Create an array from 0 to 10

@@ -11,17 +11,20 @@ export const beaconVariances = {
   [BEACON_2_UUID]: 2, //
   [BEACON_3_UUID]: 2  //
 }
-const PATHLOSS = 2.5;
+const PATHLOSS = 2.2;
 const RSSISAT1M = {
-  [BEACON_1_UUID]: -53, 
-  [BEACON_2_UUID]: -53, 
-  [BEACON_3_UUID]: -53 
+  [BEACON_1_UUID]: -56, 
+  [BEACON_2_UUID]: -56, 
+  [BEACON_3_UUID]: -56 
 }
 // COORDINATES
+// Bottom Wall y = 0
+// Left Wall x = 0
+// Right Wall x = 7.01
 export const beaconCoords = [
-  [5.00, 0.00, 0.00],      // Beacon 1  
-  [6.19, 6.10, 0.00],      // Beacon 2  
-  [5.10, 6.10, 0.00]       // Beacon 3
+  [0.00, 5.00, 0.00],     // Beacon 1  
+  [6.88, 5.00, 0.00],     // Beacon 2  
+  [4.42, 0.30, 0.00],     // Beacon 3
 ];
 
 // Beacon advertising frequency in ms

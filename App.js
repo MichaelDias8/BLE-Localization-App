@@ -23,9 +23,6 @@ import { ConstantPosition2DKFOptions, ConstantPositionInitialCovariance, process
 import KalmanFilter from 'kalmanjs';
 import { KalmanFilter as KF } from 'kalman-filter';
 
-// Three.js Imports
-import { PhoneDirectionCanvas } from './ThreeJSComponents';
-import * as THREE from 'three';
 // #endregion
 
 // #region GLOBAL VARIABLES
@@ -69,7 +66,7 @@ export default function App() {
   const [gpsCoordinates, setGPSCoordinates] = useState(null);              // GPS coordinates
   const [previousState, setPreviousState] = useState(null);                // 2D Kalman Filter State
   const [measuredPosition, setMeasuredPosition] = useState([0, 0]);        // Measured position
-  const [userCoordinates, setUserCoordinates] = useState({ x: 1, y: 3 });  // Filtered position
+  const [userCoordinates, setUserCoordinates] = useState({ x: 5, y: 5.5});  // Filtered position
   // User orientation information
   const [rotation, setRotation] = useState({ w: 0, x: 0, y: 0, z: 0 });    // Quaternion for the phones rotation
   const [direction2D, setDirection2D] = useState({ x: 0, y: 0 });          // Accelerometer projection to 2D
@@ -115,8 +112,8 @@ export default function App() {
   // Start the 2D Kalman Filter with a 400ms interval
   useEffect(() => {
     const interval = setInterval(() => {
-      updatePositionWith2DKFilter(previousStateRef.current, filteredDistancesRef.current, 3);
-    }, 3000);
+      updatePositionWith2DKFilter(previousStateRef.current, filteredDistancesRef.current, 2);
+    }, 500);
   
     // Clear interval on component unmount
     return () => {
@@ -234,23 +231,13 @@ export default function App() {
           y: userCoordinatesRef.current.y - dir2D.y * linearAcceleration * 10,
         };
       } else {
-        newCoords = { 
-          x: userCoordinatesRef.current.x - direction2DRef.current.x * linearAcceleration * 10,
-          y: userCoordinatesRef.current.y - direction2DRef.current.y * linearAcceleration * 10,
+        newCoords = {
+          x: userCoordinatesRef.current.x - direction2D.x * linearAcceleration * 10,
+          y: userCoordinatesRef.current.y - direction2D.y * linearAcceleration * 10,
         };
+        }
       }
-      console.log("Previous Coords: ", userCoordinatesRef.current);
-      console.log("New Coords: ", newCoords);
-      // Filter the new coordinates with the 2D Kalman Filter and update the state and user coordinates
-      if(!kf2D) return;
-      kf2D.observation.covariance = [[IMUMeasurementVariance, 0], [0, IMUMeasurementVariance]];
-      kf2D.dynamic.covariance = [[processNoise * 0.35, 0], [0, processNoise * 0.35]];
-      const correctedState = kf2D.correct({observation: [newCoords.x, newCoords.y], predicted: previousStateRef.current});
-      setUserCoordinates({
-        x: correctedState.mean[0][0], 
-        y: correctedState.mean[1][0], 
-      });
-      setPreviousState(correctedState);
+    );
       console.log(`Device rotation computed in ${(performance.now() - startTime).toFixed(0)}ms`);
     }, 350);
   
@@ -305,10 +292,13 @@ export default function App() {
       // Update measurement noise to trust lower distances more and higher distances less
       let measurementDifference = beaconDistances[beaconId] - filteredDistances[beaconId];      
       let measurementNoise = (measurementDifference > 0) ? 
-        measurementNoise = ((3.5 * beaconVariances[beaconId]) * Math.log10(measurementDifference + 1)) + 1
+        measurementNoise = ((0.8 * beaconVariances[beaconId]) * Math.log10(measurementDifference + 1)) + 1
       :
         measurementNoise = 1 / ((beaconVariances[beaconId] * -measurementDifference) + 1);
       
+      if(beaconDistances[beaconId] > 5) {
+        measurementNoise += (beaconDistances[beaconId] - 5);
+      }  
       kf[beaconId].setMeasurementNoise(measurementNoise);
 
        // Update the process noise value based on the time since the last advertisement
@@ -326,31 +316,43 @@ export default function App() {
     if(!kf2D && Object.values(kf).every(kf => kf !== null)){
       console.log("Initializing 2D Kalman Filter")
       initialPosition = reduceTo2D(calculatePosition(beaconCoords, filteredDistances));
-      ConstantPosition2DKFOptions.dynamic.init.mean = [[initialPosition[0]], [initialPosition[1]]]
+      ConstantPosition2DKFOptions.dynamic.init.mean = [[userCoordinatesRef.current.x], [userCoordinatesRef.current.y]];
       ConstantPosition2DKFOptions.dynamic.init.covariance = ConstantPositionInitialCovariance;
       kf2D = new KF(ConstantPosition2DKFOptions);
     }else 
     // Update Kalman Filter if new measurements are available
-    if (kf2D && Object.values(beaconLastAdvTimeRef.current).every(time => performance.now() - time < 3000)){ 
+    if (kf2D){ 
       const startTime = performance.now();
       // Get the observation
       const observation = reduceTo2D(calculatePosition(beaconCoords, filteredDistances));
       setMeasuredPosition(observation);
       // Get the current state prediction
-      const predictedState = kf2D.predict({previousCorrected: previousState}); // Get the current state prediction
+      var predictedState;
+      try {
+        predictedState = kf2D.predict({previousCorrected: previousState}); // Get the current state prediction
+      } catch (error) {
+        console.log("Error: ", error);
+      }
       // If the observation is within 10 meters of the state prediction, correct using the measurement vector
-      if(Math.abs(observation[0] - predictedState.mean[0][0]) < 7 && Math.abs(observation[1] - predictedState.mean[1][0]) < 7){
+      if(Math.abs(observation[0] - predictedState.mean[0][0]) < 10 && Math.abs(observation[1] - predictedState.mean[1][0]) < 10){
         kf2D.observation.covariance = [[beaconMeasurementVariance, 0], [0, beaconMeasurementVariance]];
         kf2D.dynamic.covariance = [[processNoise * dt, 0], [0, processNoise * dt]];
-        const correctedState = kf2D.correct({observation, predicted: predictedState}); // Correct using the measurement vector
+        var correctedState;
+        try {
+          correctedState = kf2D.correct({observation, predicted: predictedState}); // Correct using the measurement vector
+        } catch (error) {
+          console.log("Error: ", error);
+        }
+        const clampedCoords = clampUserPosition(correctedState.mean[0][0], correctedState.mean[1][0]);
+        correctedState.mean[0][0] = clampedCoords[0];
+        correctedState.mean[1][0] = clampedCoords[1];
         setUserCoordinates({
-          x: correctedState.mean[0][0], 
-          y: correctedState.mean[1][0], 
+          x: clampedCoords[0],
+          y: clampedCoords[1],
         });
         setPreviousState(correctedState);
-        console.log("Corrected State: ", correctedState);
       }
-      console.log(`2D Kalman Filter Computed in ${(performance.now() - startTime).toFixed(2)}ms`);
+      console.log(`2D Kalman Filter Computed in ${(performance.now() - startTime).toFixed(0)}ms`);
     }
   };
   //#endregion

@@ -1,11 +1,11 @@
 // 1D Kalman Filter variables
-export const processNoise = 0.25;
+export const processNoise = 0.5;
 
 // 2D Kalman Filter variables
 const dt = 0.5;
 export const beaconMeasurementVariance = 4;
-export const IMUMeasurementVariance = 1;
-const processNoise2D = 2;
+export const IMUMeasurementVariance = 20;
+const processNoise2D = 1;
 const velocityVariance = dt**2*beaconMeasurementVariance;
 
 // Beacon models

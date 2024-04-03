@@ -198,14 +198,16 @@ export async function getCurrentGPSLocation(setGPSCoordinates) {
   }
 }
 
-const bounds = [0, 0, 10, 10];
+const bounds = [-0.1, -0.1, 7, 6];
+let minX = bounds[0];
+let minY = bounds[1];
+let maxX = bounds[2];
+let maxY = bounds[3];
 
 export const clampUserPosition = (x, y) => {
-  let minX = bounds[0];
-  let minY = bounds[1];
-  let maxX = bounds[2];
-  let maxY = bounds[3];
-  x = Math.min(Math.max(x, minX), maxX);
-  y = Math.min(Math.max(y, minY), maxY);
-  return [x, y];
+
+  let clampedX = Math.min(Math.max(x, minX), maxX);
+  let clampedY = Math.min(Math.max(y, minY), maxY);
+
+  return [clampedX, clampedY];
 }
