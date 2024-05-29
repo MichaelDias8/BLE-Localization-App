@@ -9,7 +9,7 @@ const crossProduct = (v1, v2) => {
     v1[2] * v2[0] - v1[0] * v2[2],
     v1[0] * v2[1] - v1[1] * v2[0]
   ];
-}
+};
 
 // Normalize a vector using three.js
 const normalizeVector = (vector) => {
@@ -17,7 +17,7 @@ const normalizeVector = (vector) => {
   threeVector.normalize();
   // Return the normalized vector as an array
   return [threeVector.x, threeVector.y, threeVector.z];
-}
+};
 
 const normalizeVector2D = (vector) => {
   const magnitude = Math.sqrt(vector.x * vector.x + vector.y * vector.y);
@@ -29,13 +29,13 @@ const normalizeVector2D = (vector) => {
     x: vector.x / magnitude,
     y: vector.y / magnitude
   };
-}
+};
 
 const vectorMagnitude = (vector) => {
   return vector.z ? 
   Math.sqrt(vector.x * vector.x + vector.y * vector.y + vector.z * vector.z) : 
   Math.sqrt(vector.x * vector.x + vector.y * vector.y);
-}
+};
 
 // Convert rotation matrix to quaternion using three.js
 const vectorsToQuaternion = (north, east, down) => {
@@ -48,7 +48,7 @@ const vectorsToQuaternion = (north, east, down) => {
   );
   const quaternion = new Quaternion().setFromRotationMatrix(rotationMatrix4);
   return quaternion;
-}
+};
 
 // Utility function to create a rotation matrix around the Z-axis
 const createRotationMatrixZ = (angle) => {
@@ -69,6 +69,13 @@ const applyMatrixToVector = (matrix, vector) => {
     matrix[2][0] * vector[0] + matrix[2][1] * vector[1] + matrix[2][2] * vector[2]
   ];
 };
+
+const invertYaw = (quaternion) => {
+  const euler = new Euler().setFromQuaternion(quaternion);
+  euler.z = -euler.z; // Invert the yaw component
+  const invertedQuaternion = new Quaternion().setFromEuler(euler);
+  return invertedQuaternion;
+};
 // #endregion
 
 // Computes the north, east, and down directions given accelerometer and magnetometer readings
@@ -88,13 +95,13 @@ export const computeRotationWithMag = (accelerometerReading, magnetometerReading
   const magnetometerVector = normalizeVector([magnetometerReading.x, magnetometerReading.y, magnetometerReading.z]);
   
   // Convert magnetic declination from degrees to radians
-const magneticDeclinationRadians = magneticDeclination * (Math.PI / 180);
+  const magneticDeclinationRadians = magneticDeclination * (Math.PI / 180);
 
-// Create a rotation matrix for the magnetic declination
-const declinationRotationMatrix = createRotationMatrixZ(magneticDeclinationRadians);
+  // Create a rotation matrix for the magnetic declination
+  const declinationRotationMatrix = createRotationMatrixZ(magneticDeclinationRadians);
 
-// Adjust magnetometer vector for magnetic declination
-const adjustedMagnetometerVector = applyMatrixToVector(declinationRotationMatrix, magnetometerVector);
+  // Adjust magnetometer vector for magnetic declination
+  const adjustedMagnetometerVector = applyMatrixToVector(declinationRotationMatrix, magnetometerVector);
 
   // Compute east
   var east = crossProduct(down, adjustedMagnetometerVector);
@@ -106,6 +113,9 @@ const adjustedMagnetometerVector = applyMatrixToVector(declinationRotationMatrix
 
   // Compute the quaternion from the north, east, and down vectors
   var quaternion = vectorsToQuaternion(north, east, down);
+
+  // Invert the yaw
+  quaternion = invertYaw(quaternion);
 
   // Convert quaternion to Euler angles to check the pitch
   const euler = new Euler().setFromQuaternion(quaternion);
@@ -129,9 +139,8 @@ const adjustedMagnetometerVector = applyMatrixToVector(declinationRotationMatrix
 
   quaternion = {x: quaternion.x, y: quaternion.y, z: quaternion.z, w: quaternion.w}; 
 
-  
   return { quaternion, dir2D, linearAcceleration };
-}
+};
 
 // @param quaternion - previous quaternion - { x: 0, y: 0, z: 0, w: 0 }, gyroReading - { x: 0, y: 0, z: 0 }
 export const computeRotationWithGyro = (quaternion, gyroReading, dt) => {
@@ -171,5 +180,5 @@ export const computeRotationWithGyro = (quaternion, gyroReading, dt) => {
   };
 
   return normalizedQuaternion;
-}
+};
 

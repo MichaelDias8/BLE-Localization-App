@@ -17,7 +17,12 @@
     ],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.anonymous.BLELocalizationApp"
+      "bundleIdentifier": "com.anonymous.BLELocalizationApp",
+      "infoPlist": {
+        "NSBluetoothPeripheralUsageDescription": "We need Bluetooth access to connect to your device",
+        "NSBluetoothAlwaysUsageDescription": "We need Bluetooth access to connect to your device",
+        "NSLocationWhenInUseUsageDescription": "We need location access to scan for Bluetooth devices"
+      }
     },
     "android": {
       "adaptiveIcon": {
@@ -30,14 +35,36 @@
         "android.permission.BLUETOOTH_ADMIN",
         "android.permission.BLUETOOTH_CONNECT",
         "android.permission.WRITE_EXTERNAL_STORAGE"
-
       ]
     },
     "web": {
       "favicon": "./assets/favicon.png"
     },
     "plugins": [
-      "react-native-ble-plx"
+      "react-native-ble-plx",
+      [
+        "expo-build-properties",
+        {
+          "ios": {
+            "useFrameworks": "static"
+          },
+          "android": {}
+        }
+      ],
+      [
+        "expo-location",
+        {
+          "locationWhenInUsePermission": "Show current location on map."
+        }
+      ],
+      [
+        "@rnmapbox/maps",
+        {
+          "RNMapboxMapsVersion": "11.0.0",
+          "RNMapboxMapsDownloadToken": "sk.eyJ1IjoibWlzaGxlIiwiYSI6ImNsd2JsZ2lpNzA1ZG0ybHBuaGR2NHR1MGEifQ.ZiDvtU2r4_4-5qVtgmHh3g"
+        }
+      ],
+      "expo-build-properties"
     ],
     "extra": {
       "eas": {

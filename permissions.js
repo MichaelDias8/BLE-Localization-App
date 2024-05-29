@@ -1,5 +1,4 @@
 import { Platform, PermissionsAndroid } from 'react-native'
-import * as Location from 'expo-location';
 
 export async function requestBluetoothPermission() {
   if (Platform.OS === 'ios') {

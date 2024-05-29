@@ -4,7 +4,8 @@
       "developmentClient": true,
       "distribution": "internal"
     },
-    "preview": {
+    "test" : {
+      "developmentClient": true,
       "distribution": "internal"
     },
     "production": {}

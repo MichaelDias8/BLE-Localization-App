@@ -1,23 +1,25 @@
 import React, { useState, useEffect, useRef, useLayoutEffect, useMemo} from 'react';
 import { Asset } from 'expo-asset';
 import * as THREE from "three";
-import gridImage from './grid.png';
+import gridImage from './assets/grid.png';
 import { Plane } from '@react-three/drei';
 import { useThree, useFrame, Canvas, useUpdate } from '@react-three/fiber'
 
 const cameraPosition = [1, 1, 1]; // Original camera position
 
 //@param rotation - quaternion representing the phones rotation. - { x: 0, y: 0, z: 0, w: 0 }
-export const PhoneDirectionCanvas = ({ position, rotation }) => {
+export const PhoneDirectionCanvas = ({ rotation }) => {
   // Convert rotation to format expected by Three.js
   rotation = {x: rotation.x, y: rotation.z, z: rotation.y, w: rotation.w};
   
   // Compute the forward, right, and down directions as Vector3d using the rotation quaternion
-  var outDirection = new THREE.Vector3(0, 0, -1);
+  var outDirection = new THREE.Vector3(0, 0, 1);
   var upDirection = new THREE.Vector3(0, 1, 0);
 
   outDirection = outDirection.applyQuaternion(rotation);
   upDirection = upDirection.applyQuaternion(rotation);
+
+  const position = new THREE.Vector3(0, 0, 0);
   
   return (
     <>

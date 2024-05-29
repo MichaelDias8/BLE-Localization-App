@@ -1,213 +1,130 @@
-// This file implements the trilateration algorithm to compute the least squares estimate 
-// of a targets position based on distances from reference points with known coordinates.
-// The algorithm can be found at:
-// http://vigir.missouri.edu/~gdesouza/Research/Conference_CDs/IEEE_IROS_2009/papers/0978.pdf
+const projectionCenter = [-81.2764349, 43.0083786];   // Center for the mercator projection
+const coordScaleRatio = 4656312;                      // Scale ratio for the mercator projection
 
-import { dot, qr, add, subtract, transpose, multiply, zeros, divide, identity} from 'mathjs'
-import * as Location from 'expo-location';
+const userZ = 0;                                      // The z-coordinate of the user
 
-const I = identity(3);
-
-// Multilateration function 
+// 2D Multilateration function 
 // @param referencePoints: an array of arrays containing the coordinates of the reference points
 // @param distances: an array of distances from the target to each reference point
 export const calculatePosition = (referencePoints, distancesObject) => {
   const startTime = performance.now();
-  // Convert distances to a 2D array
-  let distances = [];
-  for (let distance in distancesObject) {
-    distances.push(distancesObject[distance]);
-  }
-  //log the input data
-  //console.log("Reference Points: ", referencePoints);
-  //console.log("Distances: ", distances);
-
-  // Calculate a, B, c, D, f, q*qT, H, f' and H', Q and U
-
-  // Calculate a
-  let sum = zeros(referencePoints[0].length, 1);
-  referencePoints.forEach((pT, index) => {
-    pT = [pT];
-    let p = transpose(pT);
-    let temp = subtract(multiply(multiply(p, pT), p), multiply(distances[index]**2, p));
-    sum = add(sum, temp)
-  }) 
-  const a = divide(sum, referencePoints.length);
-  //console.log("a: ", a);
-
-  // Calculate B
-  sum = zeros(referencePoints[0].length, referencePoints[0].length);
-  referencePoints.forEach((pT, index) => {
-    pT = [pT];
-    let p = transpose(pT);
-    let temp = add(subtract(multiply(-2, multiply(p, pT)), multiply(multiply(pT, p)[0][0], I)), multiply(distances[index]**2, I));
-    sum = add(sum, temp);
-  }) 
-  const B = divide(sum, referencePoints.length);
-  //console.log("B: ", B);
-
-  // Calculate c
-  sum = zeros(referencePoints[0].length, 1);
-  referencePoints.forEach((pT, index) => {
-    pT = [pT];
-    sum = add(sum, transpose(pT));
-  })
-  const c = divide(sum, referencePoints.length);
-  //console.log("c: ", c);
-
-  // Calculate D
-  const cT = transpose(c);
-  let temp = add(B, multiply(2, multiply(c, cT)));
-  const D = add(add(B, multiply(2, multiply(c, cT))), multiply(multiply(cT, c).get([0, 0]), I));
-  //console.log("D: ", D);
-
-  // Calculate f
-  const f = add(add(a, multiply(B, c)), multiply(multiply(multiply(2, c), cT), c));
-  //console.log("f: ", f);
-
-  // Calculate qT*q
-  sum = 0;
-  let sum2 = 0;
-
-  referencePoints.forEach((pT, index) => {
-    pT = [pT];
-    let p = transpose(pT);
-    let temp = multiply(pT, p);
-    let temp2 = add(distances[index]**2, multiply(cT, c));
-    sum = add(sum, temp);
-    sum2 = add(sum2, temp2);
-  })
-
-  const qTq = add(multiply(-1, divide(sum, referencePoints.length)), divide(sum2, referencePoints.length)).get([0,0]);
-  //console.log("qTq: ", qTq);
-
-  // Calculate H 
-  const H = subtract(D, multiply(qTq, I));
-  //console.log("H: ", H);
-
-  // Calculate f'
-  const fPrime = zeros(referencePoints[0].length-1, 1);
-  f.forEach((val, index) => {
-    if (index[0] === f.size()[0]-1) return;
-    //subtract last element of f from each of the other elements
-    fPrime.set([index[0], 0], val - f.get([f.size()[0]-1, 0]));
-  })
-  //console.log("f': ", fPrime);
-
-  // Calculate H'
-  const HPrime = zeros(referencePoints[0].length-1, referencePoints[0].length);
-  H.forEach((val, index) => {
-    if (index[0] === H.size()[0]-1) return;
-    //subtract the corresponding element from the last row of H from each of the other elements
-    HPrime.set([index[0], index[1]], val - H.get([H.size()[0]-1, index[1]]));
-  })
-  //console.log("H': ", HPrime);
-
-  // Using QR decomposition find Q and U where H' = QU
-
-  let QR = qr(HPrime);
-  let Q = QR.Q;
-  let U = QR.R.toArray();
-
-  //console.log("Q: ", Q);
-  //console.log("U: ", U);
-
-  // Calculate V = QTf'
-  const V = multiply(transpose(Q), fPrime).toArray();
-  //console.log("V: ", V);
-
-  // Calculate q₃ where [g + hq₃]² + [i + jq₃]² + q₃² = qTq
-  const g = subtract(divide(multiply(U[0][1], V[1]), multiply(U[0][0], U[1][1])), divide(V[0], U[0][0]))[0];
-  const h = subtract(divide(multiply(U[0][1], U[1][2]), multiply(U[0][0], U[1][1])), divide(U[0][2], U[0][0]));
-  const i = divide(V[1], U[1][1])[0];
-  const j = divide(U[1][2], U[1][1]);
-
-  //console.log("g: ", g);
-  //console.log("h: ", h);
-  //console.log("i: ", i);
-  //console.log("j: ", j);
-
-  // Calculate k, l, and m where kq₃² + lq₃ + m = 0
-  const k = 1 + h**2 + j**2;
-  const l = 2*g*h + 2*i*j;
-  const m = g**2 + i**2 - qTq;
-
-  //console.log("k: ", k);
-  //console.log("l: ", l);
-  //console.log("m: ", m);
-
-  // Solve for both solutions of q₃
-  let discriminant = l**2 - 4*k*m;
-  let realPart = -l / (2*k);
-  let imaginaryPart;
-  let q3first;
-  let q3second;
-
-  if (discriminant >= 0) {
-    // Real solutions
-    let sqrtDiscriminant = Math.sqrt(discriminant);
-    q3first = (realPart + sqrtDiscriminant / (2*k));
-    q3second = (realPart - sqrtDiscriminant / (2*k));
-  } else {
-    // Imaginary solutions
-    imaginaryPart = Math.sqrt(-discriminant) / (2*k);
-    q3first = realPart + imaginaryPart;
-    q3second = realPart - imaginaryPart;
-    //console.log("Solutions for q₃ real part: ", realPart);
-    //console.log("Solutions for q₃ imaginary part: ", imaginaryPart);
+  // Format input & remove NaN distances
+  const { formattedReferencePoints, distances } = formatInput(referencePoints, distancesObject);
+  
+  // Return if there are not enough reference points
+  if (formattedReferencePoints.length < 3) {
+    console.log("Calculate Position: Not enough reference points");
+    console.log("Reference Points: ", referencePoints);
+    console.log("Distances: ", distancesObject);
+    return false;
   }
 
-  //console.log("First Solution for q₃: ", q3first.toFixed(4));
-  //console.log("Second Solution for q₃: ", q3second.toFixed(4));
+  // Convert reference points to Mercator projection
+  const projectedReferencePoints = formattedReferencePoints.map(point => mercatorProjection(projectionCenter, point));
+  //console.log("Reference Points: ", projectedReferencePoints);
 
-  // Calculate both solutions for q₁ and q₂ using the solutions found for q₃
-  const q1first = g + h*q3first;
-  const q1second = g + h*q3second;
-  const q2first = -i - j*q3first;
-  const q2second = -i - j*q3second;
 
-  // Return the two solutions for the target position
-  const q = [q1first + c.get([0,0]), q2first + c.get([1,0]), q3first + c.get([2,0])];
-  //console.log("First Solution: ", q.map((val) => val.toFixed(4)));
-  const q2 = [q1second + c.get([0,0]), q2second + c.get([1,0]), q3second + c.get([2,0])];
-  //console.log("Second Solution: ", q2.map((val) => val.toFixed(4)));
+  // Calculate the intersection of the spheres with the xy-plane
+  const { centers, radii } = intersectSpheresWithPlane(projectedReferencePoints, distances, userZ);
+  //console.log("Centers: ", centers);
 
-  const endTime = performance.now();
-  const timeTaken = endTime - startTime;
-
-  //console.log(`Trilateration Completed in ${timeTaken.toFixed(0)}ms`);
-
-  return [q, q2];
+  // Return if there are not enough intersections
+  if (centers.length < 2) {
+    console.log("Calculate Position: Not enough circles");
+    return false;
+  }
+    
+  //Estimate & return the intersection point
+  const projectedIntersectionPoint = estimateIntersectionPoint(centers, radii);  
+  return inverseMercatorProjection(projectionCenter, projectedIntersectionPoint);
 }
 
-// Function to reduce the array of 3D positions to a single 2D position
-export const reduceTo2D = (positions) => {
-  // Return the x and y coordinates of the position that has a positive z value
-  if(positions[0][2] > 0) {
-    return [positions[0][0], positions[0][1]];
-  } else {
-    return [positions[1][0], positions[1][1]];
-  }
+function formatInput(referencePoints, distancesObject) {
+  const filteredEntries = Object.entries(distancesObject).filter(([key, value]) => !isNaN(value));
+  const formattedReferencePoints = filteredEntries.map(([key]) => [...referencePoints[key]]);
+  const distances = filteredEntries.map(([_, value]) => value);
+  
+  return { formattedReferencePoints, distances };
 }
+function intersectSpheresWithPlane(centers, radii, zPlane) {
+  const intersectionCenters = [];
+  const intersectionRadii = [];
 
-export async function getCurrentGPSLocation(setGPSCoordinates) {
-  const { status } = await Location.requestForegroundPermissionsAsync();
-  if (status === 'granted') {
-    const location = await Location.getCurrentPositionAsync({});
-    setGPSCoordinates(location);
+  for (let i = 0; i < centers.length; i++) {
+      const [x, y, z] = centers[i];
+      const r = radii[i];
+
+      // Calculate the distance from the sphere center to the plane
+      const distanceToPlane = Math.abs(z - zPlane);
+
+      // Check if the sphere intersects the plane
+      if (distanceToPlane <= r) {
+          // The radius of the intersection circle
+          const intersectionRadius = Math.sqrt(r * r - distanceToPlane * distanceToPlane);
+
+          // The center of the intersection circle in the xy-plane
+          intersectionCenters.push([x, y]);
+          intersectionRadii.push(intersectionRadius);
+      }
   }
+
+  return {
+      centers: intersectionCenters,
+      radii: intersectionRadii
+  };
 }
+function estimateIntersectionPoint(centers, radii) {
+  const n = centers.length;
 
-const bounds = [-0.1, -0.1, 7, 6];
-let minX = bounds[0];
-let minY = bounds[1];
-let maxX = bounds[2];
-let maxY = bounds[3];
+  if (n < 2) {
+      throw new Error("At least two circles are required to find an intersection point.");
+  }
 
-export const clampUserPosition = (x, y) => {
+  // Use least squares to estimate the intersection point
+  let sumX = 0;
+  let sumY = 0;
+  let sumWeights = 0;
 
-  let clampedX = Math.min(Math.max(x, minX), maxX);
-  let clampedY = Math.min(Math.max(y, minY), maxY);
+  for (let i = 0; i < n; i++) {
+      const [x, y] = centers[i];
+      const r = radii[i];
 
-  return [clampedX, clampedY];
+      // Weights can be inversely proportional to the radius
+      const weight = 1 / r;
+      sumX += weight * x;
+      sumY += weight * y;
+      sumWeights += weight;
+  }
+
+  const estimatedX = sumX / sumWeights;
+  const estimatedY = sumY / sumWeights;
+
+  return [estimatedX, estimatedY];
+}
+function mercatorProjection(center, point) {
+  const [lon0, lat0] = center;
+  const [lon, lat, z] = point;
+
+  const x = degreesToRadians(lon - lon0);
+  const y = Math.log(Math.tan(Math.PI / 4 + degreesToRadians(lat) / 2)) -
+            Math.log(Math.tan(Math.PI / 4 + degreesToRadians(lat0) / 2));
+
+  return [x * coordScaleRatio, y * coordScaleRatio, z];
+}
+function inverseMercatorProjection(center, point) {
+  const [lon0, lat0] = center;
+  var [x, y] = point;
+  x /= coordScaleRatio;
+  y /= coordScaleRatio;
+
+  const lon = radiansToDegrees(x) + lon0;
+  const lat = radiansToDegrees(2 * (Math.atan(Math.exp(y + Math.log(Math.tan(Math.PI / 4 + degreesToRadians(lat0) / 2)))) - Math.PI / 4));
+
+  return [lon, lat];
+}
+function degreesToRadians(degrees) {
+  return degrees * (Math.PI / 180);
+}
+function radiansToDegrees(radians) {
+  return radians * (180 / Math.PI);
 }
