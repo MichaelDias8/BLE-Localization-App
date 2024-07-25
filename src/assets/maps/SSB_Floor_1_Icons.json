@@ -1,0 +1,19 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Womens Bathroom"
+      },
+      "geometry": {
+        "coordinates": [
+          -81.276707,
+          43.008334
+        ],
+        "type": "Point"
+      },
+      "id": "f19b040c3011af18f8fc205bd7f9eff1"
+    }
+  ]
+}

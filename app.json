@@ -4,14 +4,8 @@
     "slug": "BLE-Localization-App",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
-    "main": "src/App.js",
+    "icon": "./src/assets/app_icon.png",
     "userInterfaceStyle": "light",
-    "splash": {
-      "image": "./assets/splash.png",
-      "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
-    },
     "assetBundlePatterns": [
       "**/*"
     ],
@@ -25,10 +19,6 @@
       }
     },
     "android": {
-      "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#ffffff"
-      },
       "package": "com.anonymous.BLELocalizationApp",
       "permissions": [
         "android.permission.BLUETOOTH",
@@ -61,7 +51,7 @@
         "@rnmapbox/maps",
         {
           "RNMapboxMapsVersion": "11.0.0",
-          "RNMapboxMapsDownloadToken": "sk.eyJ1IjoibWlzaGxlIiwiYSI6ImNsd2JsZ2lpNzA1ZG0ybHBuaGR2NHR1MGEifQ.ZiDvtU2r4_4-5qVtgmHh3g"
+          "RNMapboxMapsDownloadToken": "sk.eyJ1Ijoic3dhZHppIiwiYSI6ImNseWY0dGZjNTA5ZzQyanE4MWllMzZmaTgifQ.l4lyIOk6uziJyyWQyTWkSA"
         }
       ],
       "expo-build-properties"
