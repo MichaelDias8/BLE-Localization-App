@@ -28,10 +28,17 @@ export const calculateIconTranslation = (zoom, pitch, cameraCoordinates, symbolC
 
   // Calculate the offset factor using the method to find d
   const theta = pitch;
-  const d = Math.sqrt(horizontalDistance**2 + verticalDistance**2) * Math.tan(theta * Math.PI / 180);
+  var d = Math.sqrt(horizontalDistance**2 + verticalDistance**2) * Math.tan(theta * Math.PI / 180);
 
-  console.log("Slope: ", slope);
-  console.log("Offset Magnitude: ", d);
+  //console.log("Slope: ", slope);
+  //console.log("Offset Magnitude: ", d);
+
+  // Cap the magnitude of the offset based on the symbol altitude and pitch
+  var maxOffset = symbolCoordinates.altitude * 10;
+  if (pitch > 45) {
+    maxOffset *= (pitch - 35) / 12;
+  }
+  d = Math.min(d, maxOffset);
 
   // Calculate translation based on bearing and distance
   const bearing = turfBearing(cameraPoint, symbolPoint);

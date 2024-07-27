@@ -1,17 +1,12 @@
-export const initUserCoords = [43.00821387, -81.27666583];    // Initial user coordinates
-const projectionCenter = initUserCoords;                      // Center for the mercator projection
-const coordScaleRatio = 4656312;                              // Scale ratio for the mercator projection
+import * as turf from '@turf/turf';
 
-const userZ = 0.5;                                            // The Z coordinate of the user
-
-// 2D Multilateration function 
-// @param referencePoints: an array of arrays containing the coordinates of the reference points
-// @param distances: an array of distances from the target to each reference point
-export const calculatePosition = (referencePoints, distancesObject) => {
+// 2D Path Restricted Multilateration Function 
+// @param - referencePoints: object containing (id, coordinate) key-value pairs of nearby beacons. ex. "275873": [long, lat, z]
+// @param -       distances: object containing (id, distance)   key-value pairs of nearby beacons. ex. "275873": 2
+export const calculatePosition = (referencePoints, distancesObject, userLine, userCoordinates, userFloor) => {
   const startTime = performance.now();
   // Format input & remove NaN distances
   const { formattedReferencePoints, distances } = formatInput(referencePoints, distancesObject);
-  
   // Return if there are not enough reference points
   if (formattedReferencePoints.length < 3) {
     console.log("Calculate Position: Not enough reference points");
@@ -20,29 +15,78 @@ export const calculatePosition = (referencePoints, distancesObject) => {
     return false;
   }
 
-  // Convert reference points to Mercator projection
-  const projectedReferencePoints = formattedReferencePoints.map(point => mercatorProjection([point[1], point[0]]));
+  // Calculate the intersection of the spheres with the z plane
+  const { centers, radii } = intersectSpheresWithPlane(formattedReferencePoints, distances, 0);
 
-  // Calculate the intersection of the spheres with the xy-plane
-  const { centers, radii } = intersectSpheresWithPlane(projectedReferencePoints, distances, userZ);
+  console.log("User Line: ", userLine);
+  console.log("Reference Points: ", formattedReferencePoints);
+  console.log("Distances: ", distances);
+  console.log("Circle Centers: ", centers);
+  console.log("Circle Radii: ", radii);
 
-  // Return if there are not enough intersections
-  if (centers.length < 2) {
-    console.log(`Calculate Position Failed: Only ${centers.length} intersections found`);
-    return false;
-  }
+  // Calculate the intersection of the spheres with the user's path
+  const intersectionPoints = intersectCirclesWithLine(formattedReferencePoints, distances, userLine, userCoordinates);
+
+  console.log("Intersection Points: ", intersectionPoints);
     
-  //Estimate & return the intersection point
-  const projectedIntersectionPoint = estimateIntersectionPoint(centers, radii);  
-  return inverseMercatorProjection(projectedIntersectionPoint, projectionCenter);
+  // Estimate and return position
+  const estimatedPosition = estimatePosition(intersectionPoints, userCoordinates);
+  
+  return estimatedPosition;
 }
 
-function formatInput(referencePoints, distancesObject) {
-  const filteredEntries = Object.entries(distancesObject).filter(([key, value]) => !isNaN(value));
-  const formattedReferencePoints = filteredEntries.map(([key]) => [...referencePoints[key]]);
-  const distances = filteredEntries.map(([_, value]) => value);
+function estimatePosition(intersectionPoints, userCoordinates) {
+  // Calculate the average of the intersection points
+  const averagePoint = intersectionPoints.reduce((acc, curr) => [acc[0] + curr[0], acc[1] + curr[1]]).map(coord => coord / intersectionPoints.length);
+
+  return averagePoint;
+}
+
+function intersectCirclesWithLine(referencePoints, distances, line, userCoordinates) {
+  const intersectionPoints = [];
+
+  for (let i = 0; i < referencePoints.length; i++) {
+    const center = referencePoints[i].slice(0, 2); // Get the 2D coordinates
+    const radius = distances[i];
+    const intersections = findCircleLineIntersections(center, radius, line);
+
+    if (intersections.length > 0) {
+      // Find the intersection point closest to the userCoordinates
+      const closestPoint = intersections.reduce((prev, curr) => {
+        const prevDistance = turf.distance(turf.point(prev), turf.point(userCoordinates));
+        const currDistance = turf.distance(turf.point(curr), turf.point(userCoordinates));
+        return (prevDistance < currDistance) ? prev : curr;
+      });
+      intersectionPoints.push(closestPoint);
+    } else {
+      // If no intersection, find the nearest point on the line from the circle center
+      const nearestPoint = turf.nearestPointOnLine(turf.lineString([userCoordinates, [userCoordinates[0] + line[0], userCoordinates[1] + line[1]]]), turf.point(center));
+      intersectionPoints.push(nearestPoint.geometry.coordinates);
+    }
+  }
+
+  return intersectionPoints;
+}
+function findCircleLineIntersections(center, radius, line) {
+  const [cx, cy] = center;
+  const [dx, dy] = line;
   
-  return { formattedReferencePoints, distances };
+  const a = dx * dx + dy * dy;
+  const b = 2 * (dx * (0 - cx) + dy * (0 - cy));
+  const c = cx * cx + cy * cy - radius * radius;
+
+  const discriminant = b * b - 4 * a * c;
+  if (discriminant < 0) {
+    return [];
+  }
+
+  const t1 = (-b + Math.sqrt(discriminant)) / (2 * a);
+  const t2 = (-b - Math.sqrt(discriminant)) / (2 * a);
+
+  const intersection1 = [cx + t1 * dx, cy + t1 * dy];
+  const intersection2 = [cx + t2 * dx, cy + t2 * dy];
+
+  return [intersection1, intersection2];
 }
 function intersectSpheresWithPlane(centers, radii, zPlane) {
   const intersectionCenters = [];
@@ -71,58 +115,10 @@ function intersectSpheresWithPlane(centers, radii, zPlane) {
       radii: intersectionRadii
   };
 }
-function estimateIntersectionPoint(centers, radii) {
-  const n = centers.length;
-
-  if (n < 2) {
-      throw new Error("At least two circles are required to find an intersection point.");
-  }
-
-  // Use least squares to estimate the intersection point
-  let sumX = 0;
-  let sumY = 0;
-  let sumWeights = 0;
-
-  for (let i = 0; i < n; i++) {
-      const [x, y] = centers[i];
-      const r = radii[i];
-
-      // Weights can be inversely proportional to the radius
-      const weight = 1 / r;
-      sumX += weight * x;
-      sumY += weight * y;
-      sumWeights += weight;
-  }
-
-  const estimatedX = sumX / sumWeights;
-  const estimatedY = sumY / sumWeights;
-
-  return [estimatedX, estimatedY];
-}
-export function mercatorProjection(point, center=projectionCenter) {
-  const [lon0, lat0] = center;
-  const [lon, lat] = point;
-
-  const x = degreesToRadians(lon - lon0);
-  const y = Math.log(Math.tan(Math.PI / 4 + degreesToRadians(lat) / 2)) -
-            Math.log(Math.tan(Math.PI / 4 + degreesToRadians(lat0) / 2));
-
-  return [x * coordScaleRatio, y * coordScaleRatio];
-}
-export function inverseMercatorProjection(point, center=projectionCenter) {
-  const [lon0, lat0] = center;
-  var [x, y] = point;
-  x /= coordScaleRatio;
-  y /= coordScaleRatio;
-
-  const lon = radiansToDegrees(x) + lon0;
-  const lat = radiansToDegrees(2 * (Math.atan(Math.exp(y + Math.log(Math.tan(Math.PI / 4 + degreesToRadians(lat0) / 2)))) - Math.PI / 4));
-
-  return [lon, lat];
-}
-function degreesToRadians(degrees) {
-  return degrees * (Math.PI / 180);
-}
-function radiansToDegrees(radians) {
-  return radians * (180 / Math.PI);
+function formatInput(referencePoints, distancesObject) {
+  const filteredEntries = Object.entries(distancesObject).filter(([key, value]) => !isNaN(value));
+  const formattedReferencePoints = filteredEntries.map(([key]) => [...referencePoints[key]]);
+  const distances = filteredEntries.map(([_, value]) => value);
+  
+  return { formattedReferencePoints, distances };
 }

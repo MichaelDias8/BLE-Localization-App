@@ -54,9 +54,9 @@ const BuildingExtrusions = ({ floor }) => {
         filter={['match', ['get', 'Type'], ['Stairwell'], true, false]}
         style={{
           'fillExtrusionColor': 'hsl(116, 21%, 50%)',
-          'fillExtrusionHeight': heightStyles.roomFloor,
+          'fillExtrusionHeight': heightStyles.roomFloor + 0.5,
           'fillExtrusionBase': heightStyles.base,
-          'fillExtrusionOpacity': 0.91
+          'fillExtrusionOpacity': 0.71
         }}
       />
       <Mapbox.FillExtrusionLayer
@@ -99,9 +99,9 @@ const BuildingExtrusions = ({ floor }) => {
         belowLayerID='poi-labels-layer'
         filter={['match', ['get', 'Type'], ['Open Room'], true, false]}
         style={{
-          'fillExtrusionColor': 'hsl(318, 13%, 58%)',
+          'fillExtrusionColor': 'hsl(266, 31%, 79%)',
           'fillExtrusionHeight': heightStyles.openRoomFloor,
-          'fillExtrusionOpacity': 0.86,
+          'fillExtrusionOpacity': 0.96,
           'fillExtrusionBase': heightStyles.base,
         }}
       />

@@ -1,46 +1,47 @@
 // 1D Kalman Filter variables
-export const processNoise = 0.5;  
+export const processNoise = 0.5;      // Process noise variance for distance
+export const beaconVariance = 2;      // Measurement Variance of the BLE distance measurements
 
 // 2D Kalman Filter variables
-export const KFFrequency = 0.5;                             // Time step in seconds
-const processNoise2D = 1;                                   // Process noise for the 2D Kalman Filter
+export const dtBLE = 0.5;             // Time step in seconds
+export const dtAPI = 0.2;             // Time step in seconds
 
-const BLEPosVariance = 4;                                   // Variance of the BLE position measurements
-const APIPosVariance = 4;                                   // Variance of the API position measurements
-
-const BLEVelVariance = KFFrequency ** 2 * BLEPosVariance;   // Variance of the BLE velocity measurements
-const APIVelVariance = KFFrequency ** 2 * APIPosVariance;   // Variance of the API velocity measurements
+export const BLEVariance = 4;         // Measurement Variance of the BLE observations
+export const APIVariance = 4;         // Measurement Variance of the API observations
+const velocityVariance = 1;           // Process noise variance for velocity 
 
 // MODELS
-export const ConstPosKFOptions = {
+export var constVelKFOptions = {
   dynamic: {
-    init: {
-      mean: [0, 0],
-      covariance: [huge, huge],
-    },
+    dimension: 4,
     transition: [
-      [1, 0],
-      [0, 1],
+      [1, 0, dtBLE, 0],
+      [0, 1, 0, dtBLE],
+      [0, 0, 1, 0],
+      [0, 0, 0, 1],
     ],
-    covariance: [processNoise2D * KFFrequency, processNoise2D * KFFrequency]
+    covariance: getCovarianceMatrix(dtBLE),
   },
   observation: {
     dimension: 2,
     stateProjection: [
-      [1, 0],
-      [0, 1],
+      [1, 0, 0, 0],
+      [0, 1, 0, 0],
     ],
-    covariance: [ APIPosVariance, APIPosVariance]
+    covariance: [
+      [APIVariance, 0],
+      [0, APIVariance],
+    ]
   }
 };
 
 // INITIAL COVARIANCES
 const huge = 100;
-export const ConstPosKFInitCov = [
+export const constPosKFInitCov = [
   [huge, 0],
   [0, huge]
 ];
-export const ConstVelKFInitCov = [
+export const constVelKFInitCov = [
   [huge, 0, 0, 0],
   [0, huge, 0, 0],
   [0, 0, huge, 0],
@@ -48,14 +49,15 @@ export const ConstVelKFInitCov = [
 ];
 
 // HELPERS
-function scalarMultiply2DArray(matrix, scalar) {
-  // Iterate through each row of the matrix
-  for (let i = 0; i < matrix.length; i++) {
-      // Iterate through each column in the current row
-      for (let j = 0; j < matrix[i].length; j++) {
-          // Multiply the current element by the scalar and update the element
-          matrix[i][j] *= scalar;
-      }
-  }
-  return matrix;
+export function getCovarianceMatrix(deltaTime) {
+  const dt4_4 = (deltaTime ** 4) / 4;
+  const dt3_2 = (deltaTime ** 3) / 2;
+  const dt2 = deltaTime ** 2;
+
+  return [
+    [dt4_4 * velocityVariance, dt3_2 * velocityVariance, 0, 0],
+    [dt3_2 * velocityVariance, dt2 * velocityVariance, 0, 0],
+    [0, 0, dt4_4 * velocityVariance, dt3_2 * velocityVariance],
+    [0, 0, dt3_2 * velocityVariance, dt2 * velocityVariance]
+  ];
 }

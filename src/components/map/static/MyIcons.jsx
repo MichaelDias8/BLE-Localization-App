@@ -29,8 +29,6 @@ const iconImages = {
   'Stairs': 'staircaseIcon'
 };
 
-const getNumbersFromFloat = (floatNum) => floatNum.toString().split('.')[1]?.substring(2, 5) || '';
-
 const MyIcons = ({ floor, pitch, zoom, bearing, center }) => {
   floor = floor.toString();
   const shapeSourceID = `propel-3d-floor-1-icons-source`;
@@ -41,66 +39,30 @@ const MyIcons = ({ floor, pitch, zoom, bearing, center }) => {
     return coordinates;
   }, [center, zoom, pitch]);
 
-  const cameraPolygon = useMemo(() => ({
-    type: 'FeatureCollection',
-    features: [
-      {
-        type: 'Feature',
-        geometry: {
-          type: 'Polygon',
-          coordinates: [[
-            [cameraCoordinates.longitude - 0.000015, cameraCoordinates.latitude - 0.00001],
-            [cameraCoordinates.longitude + 0.000015, cameraCoordinates.latitude - 0.00001],
-            [cameraCoordinates.longitude + 0.000015, cameraCoordinates.latitude + 0.00001],
-            [cameraCoordinates.longitude - 0.000015, cameraCoordinates.latitude + 0.00001],
-            [cameraCoordinates.longitude - 0.000015, cameraCoordinates.latitude - 0.00001]
-          ]]
-        },
-        properties: {}
-      }
-    ]
-  }), [cameraCoordinates]);
-
   return (
     <>
       <Images images={{ unisexRestroomIcon, mensRestroomIcon, womensRestroomIcon, elevatorIcon, staircaseIcon }} />
 
       {iconData.features.map((feature, index) => {
-        const { Name } = feature.properties;
+        const { Name, Long, Lat } = feature.properties;
         const symbolCoordinates = {
           altitude: heightStyles.floor,
-          longitude: feature.geometry.coordinates[0],
-          latitude: feature.geometry.coordinates[1]
+          longitude: Long,
+          latitude: Lat
         };
 
         const iconImage = iconImages[Name];
-
-        const symbolPolygon = {
-          type: 'FeatureCollection',
-          features: [
-            {
-              type: 'Feature',
-              geometry: {
-                type: 'Polygon',
-                coordinates: [[
-                  [symbolCoordinates.longitude - 0.00001, symbolCoordinates.latitude - 0.00001],
-                  [symbolCoordinates.longitude + 0.00001, symbolCoordinates.latitude - 0.00001],
-                  [symbolCoordinates.longitude + 0.00001, symbolCoordinates.latitude + 0.00001],
-                  [symbolCoordinates.longitude - 0.00001, symbolCoordinates.latitude + 0.00001],
-                  [symbolCoordinates.longitude - 0.00001, symbolCoordinates.latitude - 0.00001]
-                ]]
-              },
-              properties: {}
-            }
-          ]
-        };
 
         return (
           <React.Fragment key={index}>
             <Mapbox.SymbolLayer
               id={`${Name.toLowerCase().replace(/\s/g, '-')}-icon-layer-${index}`}
               sourceID={shapeSourceID}
-              filter={['==', ['get', 'Name'], Name]}
+              filter={['all', 
+                ['==', ['get', 'Name'], Name], 
+                ['==', ['get', 'Long'], Long],
+                ['==', ['get', 'Lat'], Lat]
+              ]}
               style={{
                 iconImage: iconImage,
                 iconAnchor: 'bottom',
@@ -109,32 +71,9 @@ const MyIcons = ({ floor, pitch, zoom, bearing, center }) => {
                 iconSize: iconSizeOptions
               }}
             />
-            <Mapbox.ShapeSource id={`symbol-polygon-source-${index}`} shape={symbolPolygon}>
-              <Mapbox.FillExtrusionLayer
-                id={`symbol-polygon-layer-${index}`}
-                style={{
-                  fillExtrusionColor: 'blue',
-                  fillExtrusionHeight: symbolCoordinates.altitude,
-                  fillExtrusionBase: 0,
-                  fillExtrusionOpacity: 0.5
-                }}
-              />
-            </Mapbox.ShapeSource>
           </React.Fragment>
         );
       })}
-
-      <Mapbox.ShapeSource id="camera-position-source" shape={cameraPolygon}>
-        <Mapbox.FillExtrusionLayer
-          id="camera-position-layer"
-          style={{
-            fillExtrusionColor: 'red',
-            fillExtrusionHeight: cameraCoordinates.altitude + 2,
-            fillExtrusionBase: cameraCoordinates.altitude - 2,
-            fillExtrusionOpacity: 0.5
-          }}
-        />
-      </Mapbox.ShapeSource>
     </>
   );
 };

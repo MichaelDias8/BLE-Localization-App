@@ -1,0 +1,3313 @@
+{
+    "type": "FeatureCollection",
+    "features": [
+        {
+            "type": "Feature",
+            "properties": {
+                "Name": "Student Central Office"
+            },
+            "geometry": {
+                "coordinates": [
+                    -81.276627,
+                    43.00822
+                ],
+                "type": "Point"
+            },
+            "id": "062b4207bc3f939639e00444714d1d86"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "Type": "Indoor Wall"
+            },
+            "geometry": {
+                "type": "Polygon",
+                "coordinates": [
+                    [
+                        [
+                            -81.2765805,
+                            43.0081145
+                        ],
+                        [
+                            -81.2765799,
+                            43.0081171
+                        ],
+                        [
+                            -81.2765925,
+                            43.0081185
+                        ],
+                        [
+                            -81.2765931,
+                            43.0081159
+                        ],
+                        [
+                            -81.2765805,
+                            43.0081145
+                        ]
+                    ]
+                ]
+            },
+            "id": "d6ksm8brty1zwurhlfd47tbt2quxtp0i"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "Type": "Indoor Wall"
+            },
+            "geometry": {
+                "type": "Polygon",
+                "coordinates": [
+                    [
+                        [
+                            -81.2765889,
+                            43.0081181
+                        ],
+                        [
+                            -81.2765925,
+                            43.0081185
+                        ],
+                        [
+                            -81.2766021,
+                            43.0080789
+                        ],
+                        [
+                            -81.2765985,
+                            43.0080785
+                        ],
+                        [
+                            -81.2765889,
+                            43.0081181
+                        ]
+                    ]
+                ]
+            },
+            "id": "18t233mizbudxjx7r42p0yet0ic3jcem"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "Type": "Indoor Wall"
+            },
+            "geometry": {
+                "type": "Polygon",
+                "coordinates": [
+                    [
+                        [
+                            -81.2766015,
+                            43.0080815
+                        ],
+                        [
+                            -81.2766021,
+                            43.0080789
+                        ],
+                        [
+                            -81.2765615,
+                            43.0080735
+                        ],
+                        [
+                            -81.2765609,
+                            43.0080761
+                        ],
+                        [
+                            -81.2766015,
+                            43.0080815
+                        ]
+                    ]
+                ]
+            },
+            "id": "xqi2vjxgtcnmqnx28zhpysavmy51s9ps"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "Type": "Outer Wall"
+            },
+            "geometry": {
+                "type": "Polygon",
+                "coordinates": [
+                    [
+                        [
+                            -81.2764852,
+                            43.0081254
+                        ],
+                        [
+                            -81.2764798,
+                            43.0081246
+                        ],
+                        [
+                            -81.2764478,
+                            43.0082576
+                        ],
+                        [
+                            -81.2764532,
+                            43.0082584
+                        ],
+                        [
+                            -81.2764852,
+                            43.0081254
+                        ]
+                    ]
+                ]
+            },
+            "id": "3yfuk3ej0n7vzafjz8ojh4u3bxt2u5xv"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "Type": "Indoor Wall"
+            },
+            "geometry": {
+                "type": "Polygon",
+                "coordinates": [
+                    [
+                        [
+                            -81.2765159,
+                            43.0083911
+                        ],
+                        [
+                            -81.2765195,
+                            43.0083915
+                        ],
+                        [
+                            -81.2765421,
+                            43.0082889
+                        ],
+                        [
+                            -81.2765385,
+                            43.0082885
+                        ],
+                        [
+                            -81.2765159,
+                            43.0083911
+                        ]
+                    ]
+                ]
+            },
+            "id": "inbhrjixys65bw6xfox3vx65oq3k45t0"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "Type": "Indoor Wall"
+            },
+            "geometry": {
+                "type": "Polygon",
+                "coordinates": [
+                    [
+                        [
+                            -81.2765196,
+                            43.0083734
+                        ],
+                        [
+                            -81.2765188,
+                            43.008376
+                        ],
+                        [
+                            -81.2765614,
+                            43.0083826
+                        ],
+                        [
+                            -81.2765622,
+                            43.00838
+                        ],
+                        [
+                            -81.2765196,
+                            43.0083734
+                        ]
+                    ]
+                ]
+            },
+            "id": "97b8j2ljwcfiogfyfam6c16rq560hwtj"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "Type": "Indoor Wall"
+            },
+            "geometry": {
+                "type": "Polygon",
+                "coordinates": [
+                    [
+                        [
+                            -81.2765579,
+                            43.008382
+                        ],
+                        [
+                            -81.2765615,
+                            43.0083826
+                        ],
+                        [
+                            -81.2765731,
+                            43.008338
+                        ],
+                        [
+                            -81.2765695,
+                            43.0083374
+                        ],
+                        [
+                            -81.2765579,
+                            43.008382
+                        ]
+                    ]
+                ]
+            },
+            "id": "it3xf94rktlx3h9sdmuoyasem800sz0z"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "Type": "Indoor Wall"
+            },
+            "geometry": {
+                "type": "Polygon",
+                "coordinates": [
+                    [
+                        [
+                            -81.2765695,
+                            43.0083375
+                        ],
+                        [
+                            -81.2765689,
+                            43.0083401
+                        ],
+                        [
+                            -81.2766235,
+                            43.0083465
+                        ],
+                        [
+                            -81.2766241,
+                            43.0083439
+                        ],
+                        [
+                            -81.2765695,
+                            43.0083375
+                        ]
+                    ]
+                ]
+            },
+            "id": "zni31u9oupl6zhvbzwz27fakf1ni9tu6"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "Type": "Indoor Wall"
+            },
+            "geometry": {
+                "type": "Polygon",
+                "coordinates": [
+                    [
+                        [
+                            -81.2766241,
+                            43.0083439
+                        ],
+                        [
+                            -81.2766205,
+                            43.0083435
+                        ],
+                        [
+                            -81.2766139,
+                            43.0083761
+                        ],
+                        [
+                            -81.2766175,
+                            43.0083765
+                        ],
+                        [
+                            -81.2766241,
+                            43.0083439
+                        ]
+                    ]
+                ]
+            },
+            "id": "jtl149p23d4nkda2uvsxads5560ez4nz"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "Type": "Indoor Wall"
+            },
+            "geometry": {
+                "type": "Polygon",
+                "coordinates": [
+                    [
+                        [
+                            -81.2766175,
+                            43.0083765
+                        ],
+                        [
+                            -81.2766181,
+                            43.0083739
+                        ],
+                        [
+                            -81.2765615,
+                            43.0083665
+                        ],
+                        [
+                            -81.2765609,
+                            43.0083691
+                        ],
+                        [
+                            -81.2766175,
+                            43.0083765
+                        ]
+                    ]
+                ]
+            },
+            "id": "sblzqd5nz8e7efr7isr9njx1rdn8qpio"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "Type": "Indoor Wall"
+            },
+            "geometry": {
+                "type": "Polygon",
+                "coordinates": [
+                    [
+                        [
+                            -81.2766725,
+                            43.0083495
+                        ],
+                        [
+                            -81.2766719,
+                            43.0083521
+                        ],
+                        [
+                            -81.2767435,
+                            43.0083615
+                        ],
+                        [
+                            -81.2767441,
+                            43.0083589
+                        ],
+                        [
+                            -81.2766725,
+                            43.0083495
+                        ]
+                    ]
+                ]
+            },
+            "id": "sbmg2j1oz1rborgp8obbths912p5rnlz"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "Type": "Indoor Wall"
+            },
+            "geometry": {
+                "type": "Polygon",
+                "coordinates": [
+                    [
+                        [
+                            -81.27674,
+                            43.0083612
+                        ],
+                        [
+                            -81.2767436,
+                            43.0083614
+                        ],
+                        [
+                            -81.276745,
+                            43.0083518
+                        ],
+                        [
+                            -81.2767414,
+                            43.0083516
+                        ],
+                        [
+                            -81.27674,
+                            43.0083612
+                        ]
+                    ]
+                ]
+            },
+            "id": "jufqo9k6zwsbeeggg83lnl18p38xc28r"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "Type": "Indoor Wall"
+            },
+            "geometry": {
+                "type": "Polygon",
+                "coordinates": [
+                    [
+                        [
+                            -81.2767438,
+                            43.008341
+                        ],
+                        [
+                            -81.2767474,
+                            43.0083416
+                        ],
+                        [
+                            -81.2767502,
+                            43.008332
+                        ],
+                        [
+                            -81.2767466,
+                            43.0083314
+                        ],
+                        [
+                            -81.2767438,
+                            43.008341
+                        ]
+                    ]
+                ]
+            },
+            "id": "alpdebjgzl9mqv2k8lol37b4fct11407"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "Type": "Indoor Wall"
+            },
+            "geometry": {
+                "type": "Polygon",
+                "coordinates": [
+                    [
+                        [
+                            -81.2767475,
+                            43.0083365
+                        ],
+                        [
+                            -81.2767481,
+                            43.0083339
+                        ],
+                        [
+                            -81.2767285,
+                            43.0083315
+                        ],
+                        [
+                            -81.2767279,
+                            43.0083341
+                        ],
+                        [
+                            -81.2767475,
+                            43.0083365
+                        ]
+                    ]
+                ]
+            },
+            "id": "5qrkxrkxt3hvc9udm7lqffpk855b1d6o"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "Type": "Indoor Wall"
+            },
+            "geometry": {
+                "type": "Polygon",
+                "coordinates": [
+                    [
+                        [
+                            -81.2767468,
+                            43.008323
+                        ],
+                        [
+                            -81.2767504,
+                            43.0083236
+                        ],
+                        [
+                            -81.2767532,
+                            43.008315
+                        ],
+                        [
+                            -81.2767496,
+                            43.0083144
+                        ],
+                        [
+                            -81.2767468,
+                            43.008323
+                        ]
+                    ]
+                ]
+            },
+            "id": "pmovi1c6twe4mdua0z8418txbpkbwetn"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "Type": "Indoor Wall"
+            },
+            "geometry": {
+                "type": "Polygon",
+                "coordinates": [
+                    [
+                        [
+                            -81.2767525,
+                            43.0083175
+                        ],
+                        [
+                            -81.2767531,
+                            43.0083149
+                        ],
+                        [
+                            -81.2766825,
+                            43.0083055
+                        ],
+                        [
+                            -81.2766819,
+                            43.0083081
+                        ],
+                        [
+                            -81.2767525,
+                            43.0083175
+                        ]
+                    ]
+                ]
+            },
+            "id": "4ftv82jpaexzwd7o56b1jb38noexenu7"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "Type": "Indoor Wall"
+            },
+            "geometry": {
+                "type": "Polygon",
+                "coordinates": [
+                    [
+                        [
+                            -81.2766478,
+                            43.0083143
+                        ],
+                        [
+                            -81.2766478,
+                            43.0083117
+                        ],
+                        [
+                            -81.2766402,
+                            43.0083117
+                        ],
+                        [
+                            -81.2766402,
+                            43.0083143
+                        ],
+                        [
+                            -81.2766478,
+                            43.0083143
+                        ]
+                    ]
+                ]
+            },
+            "id": "wxw3nju09j6v3f7yw64lwkphyvmlqvqa"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "Type": "Indoor Wall"
+            },
+            "geometry": {
+                "type": "Polygon",
+                "coordinates": [
+                    [
+                        [
+                            -81.2766399,
+                            43.0083141
+                        ],
+                        [
+                            -81.2766435,
+                            43.0083145
+                        ],
+                        [
+                            -81.2766461,
+                            43.0083019
+                        ],
+                        [
+                            -81.2766425,
+                            43.0083015
+                        ],
+                        [
+                            -81.2766399,
+                            43.0083141
+                        ]
+                    ]
+                ]
+            },
+            "id": "0ycgfgudur1q066879xqtlxnzpy62xlb"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "Type": "Indoor Wall"
+            },
+            "geometry": {
+                "type": "Polygon",
+                "coordinates": [
+                    [
+                        [
+                            -81.2766455,
+                            43.0083045
+                        ],
+                        [
+                            -81.2766461,
+                            43.0083019
+                        ],
+                        [
+                            -81.2765795,
+                            43.0082935
+                        ],
+                        [
+                            -81.2765789,
+                            43.0082961
+                        ],
+                        [
+                            -81.2766455,
+                            43.0083045
+                        ]
+                    ]
+                ]
+            },
+            "id": "t2iyoe8uq1c18z0pqjdvzn3vsu0dlkby"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "Type": "Indoor Wall"
+            },
+            "geometry": {
+                "type": "Polygon",
+                "coordinates": [
+                    [
+                        [
+                            -81.2765831,
+                            43.0082939
+                        ],
+                        [
+                            -81.2765795,
+                            43.0082935
+                        ],
+                        [
+                            -81.2765679,
+                            43.0083391
+                        ],
+                        [
+                            -81.2765715,
+                            43.0083395
+                        ],
+                        [
+                            -81.2765831,
+                            43.0082939
+                        ]
+                    ]
+                ]
+            },
+            "id": "3548cl9td52svoj8z9esn38owk6vpkmb"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "Type": "Indoor Wall"
+            },
+            "geometry": {
+                "type": "Polygon",
+                "coordinates": [
+                    [
+                        [
+                            -81.2765685,
+                            43.0083365
+                        ],
+                        [
+                            -81.2765679,
+                            43.0083391
+                        ],
+                        [
+                            -81.2767245,
+                            43.0083595
+                        ],
+                        [
+                            -81.2767251,
+                            43.0083569
+                        ],
+                        [
+                            -81.2765685,
+                            43.0083365
+                        ]
+                    ]
+                ]
+            },
+            "id": "scobd3b4dkzkhzo8usblly9gpsshuh18"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "Type": "Indoor Wall"
+            },
+            "geometry": {
+                "type": "Polygon",
+                "coordinates": [
+                    [
+                        [
+                            -81.2767209,
+                            43.0083591
+                        ],
+                        [
+                            -81.2767245,
+                            43.0083595
+                        ],
+                        [
+                            -81.2767341,
+                            43.0083129
+                        ],
+                        [
+                            -81.2767305,
+                            43.0083125
+                        ],
+                        [
+                            -81.2767209,
+                            43.0083591
+                        ]
+                    ]
+                ]
+            },
+            "id": "l3uboza7wh27021aw5dtnkue5t03nh3c"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "Type": "Indoor Wall"
+            },
+            "geometry": {
+                "type": "Polygon",
+                "coordinates": [
+                    [
+                        [
+                            -81.2767334,
+                            43.0083156
+                        ],
+                        [
+                            -81.2767342,
+                            43.008313
+                        ],
+                        [
+                            -81.2766826,
+                            43.0083054
+                        ],
+                        [
+                            -81.2766818,
+                            43.008308
+                        ],
+                        [
+                            -81.2767334,
+                            43.0083156
+                        ]
+                    ]
+                ]
+            },
+            "id": "ey9djdfp4pbgmwip0u22ozzqjocu5tok"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "Type": "Indoor Wall"
+            },
+            "geometry": {
+                "type": "Polygon",
+                "coordinates": [
+                    [
+                        [
+                            -81.276686,
+                            43.0083059
+                        ],
+                        [
+                            -81.2766824,
+                            43.0083055
+                        ],
+                        [
+                            -81.27668,
+                            43.0083191
+                        ],
+                        [
+                            -81.2766836,
+                            43.0083195
+                        ],
+                        [
+                            -81.276686,
+                            43.0083059
+                        ]
+                    ]
+                ]
+            },
+            "id": "387wnc4xfhb1x5wrnsw8vnhtvd5d8w7h"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "Type": "Indoor Wall"
+            },
+            "geometry": {
+                "type": "Polygon",
+                "coordinates": [
+                    [
+                        [
+                            -81.2766833,
+                            43.0083197
+                        ],
+                        [
+                            -81.2766843,
+                            43.0083171
+                        ],
+                        [
+                            -81.2766757,
+                            43.0083153
+                        ],
+                        [
+                            -81.2766747,
+                            43.0083179
+                        ],
+                        [
+                            -81.2766833,
+                            43.0083197
+                        ]
+                    ]
+                ]
+            },
+            "id": "1vwix6bz3hl4krnyddfde2r9cttltx3v"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "Type": "Indoor Wall"
+            },
+            "geometry": {
+                "type": "Polygon",
+                "coordinates": [
+                    [
+                        [
+                            -81.2765939,
+                            43.0083431
+                        ],
+                        [
+                            -81.2765975,
+                            43.0083435
+                        ],
+                        [
+                            -81.2766081,
+                            43.0082969
+                        ],
+                        [
+                            -81.2766045,
+                            43.0082965
+                        ],
+                        [
+                            -81.2765939,
+                            43.0083431
+                        ]
+                    ]
+                ]
+            },
+            "id": "a31xodr0lewvv8y99b4pmv7wfr2bxlw8"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "Type": "Indoor Wall"
+            },
+            "geometry": {
+                "type": "Polygon",
+                "coordinates": [
+                    [
+                        [
+                            -81.2766559,
+                            43.0083361
+                        ],
+                        [
+                            -81.2766595,
+                            43.0083365
+                        ],
+                        [
+                            -81.2766641,
+                            43.0083149
+                        ],
+                        [
+                            -81.2766605,
+                            43.0083145
+                        ],
+                        [
+                            -81.2766559,
+                            43.0083361
+                        ]
+                    ]
+                ]
+            },
+            "id": "xrzwpvytalujgju4lm8b9o7fa1hfxebj"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "Type": "Indoor Wall"
+            },
+            "geometry": {
+                "type": "Polygon",
+                "coordinates": [
+                    [
+                        [
+                            -81.2766686,
+                            43.0083175
+                        ],
+                        [
+                            -81.276669,
+                            43.0083149
+                        ],
+                        [
+                            -81.2766554,
+                            43.0083135
+                        ],
+                        [
+                            -81.276655,
+                            43.0083161
+                        ],
+                        [
+                            -81.2766686,
+                            43.0083175
+                        ]
+                    ]
+                ]
+            },
+            "id": "dbn622ogpkdtoxmzu50l5qub771k674q"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "Type": "Bathroom"
+            },
+            "geometry": {
+                "coordinates": [
+                    [
+                        [
+                            -81.276706,
+                            43.008176
+                        ],
+                        [
+                            -81.276711,
+                            43.008157
+                        ],
+                        [
+                            -81.276679,
+                            43.008153
+                        ],
+                        [
+                            -81.276675,
+                            43.008172
+                        ],
+                        [
+                            -81.276706,
+                            43.008176
+                        ]
+                    ]
+                ],
+                "type": "Polygon"
+            },
+            "id": "216010066a30d4001b2294f45711d210"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "Name": "Elevator 2"
+            },
+            "geometry": {
+                "coordinates": [
+                    -81.276618,
+                    43.008156
+                ],
+                "type": "Point"
+            },
+            "id": "2c11b99e54cce02666bf1e80771dcedd"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "Type": "Outer Wall"
+            },
+            "geometry": {
+                "type": "Polygon",
+                "coordinates": [
+                    [
+                        [
+                            -81.2764503,
+                            43.0082684
+                        ],
+                        [
+                            -81.2764449,
+                            43.0082676
+                        ],
+                        [
+                            -81.2764417,
+                            43.0082786
+                        ],
+                        [
+                            -81.2764471,
+                            43.0082794
+                        ],
+                        [
+                            -81.2764503,
+                            43.0082684
+                        ]
+                    ]
+                ]
+            },
+            "id": "wtghot9qfo736d91s4vf4toivpn9h48f"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "Type": "Outer Wall"
+            },
+            "geometry": {
+                "type": "Polygon",
+                "coordinates": [
+                    [
+                        [
+                            -81.2764428,
+                            43.0082746
+                        ],
+                        [
+                            -81.2764418,
+                            43.0082786
+                        ],
+                        [
+                            -81.2765142,
+                            43.0082884
+                        ],
+                        [
+                            -81.2765152,
+                            43.0082844
+                        ],
+                        [
+                            -81.2764428,
+                            43.0082746
+                        ]
+                    ]
+                ]
+            },
+            "id": "hi7wpvx3ivtx7ern13d2er9pe1b5iyqy"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "Type": "Outer Wall"
+            },
+            "geometry": {
+                "type": "Polygon",
+                "coordinates": [
+                    [
+                        [
+                            -81.2765151,
+                            43.0082843
+                        ],
+                        [
+                            -81.2765097,
+                            43.0082837
+                        ],
+                        [
+                            -81.2764799,
+                            43.0084247
+                        ],
+                        [
+                            -81.2764853,
+                            43.0084253
+                        ],
+                        [
+                            -81.2765151,
+                            43.0082843
+                        ]
+                    ]
+                ]
+            },
+            "id": "5pqb81qexa8reu6fwpyi2v4jcv1ct09j"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "Type": "Open Room"
+            },
+            "geometry": {
+                "coordinates": [
+                    [
+                        [
+                            -81.276488,
+                            43.008104
+                        ],
+                        [
+                            -81.27655,
+                            43.008112
+                        ],
+                        [
+                            -81.27651,
+                            43.008286
+                        ],
+                        [
+                            -81.276446,
+                            43.008277
+                        ],
+                        [
+                            -81.276488,
+                            43.008104
+                        ]
+                    ]
+                ],
+                "type": "Polygon"
+            },
+            "id": "307c01f0936446fafcd476bdd0391b68"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "Type": "Glass Wall"
+            },
+            "geometry": {
+                "type": "Polygon",
+                "coordinates": [
+                    [
+                        [
+                            -81.2766657,
+                            43.0082868
+                        ],
+                        [
+                            -81.2766661,
+                            43.0082854
+                        ],
+                        [
+                            -81.2765543,
+                            43.0082712
+                        ],
+                        [
+                            -81.2765539,
+                            43.0082726
+                        ],
+                        [
+                            -81.2766657,
+                            43.0082868
+                        ]
+                    ]
+                ]
+            },
+            "id": "yeve0k3n4v8f5w5msvbtde69tmsbatso"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "Type": "Indoor Wall"
+            },
+            "geometry": {
+                "type": "Polygon",
+                "coordinates": [
+                    [
+                        [
+                            -81.2766989,
+                            43.008199
+                        ],
+                        [
+                            -81.2767025,
+                            43.0081996
+                        ],
+                        [
+                            -81.2767141,
+                            43.008155
+                        ],
+                        [
+                            -81.2767105,
+                            43.0081544
+                        ],
+                        [
+                            -81.2766989,
+                            43.008199
+                        ]
+                    ]
+                ]
+            },
+            "id": "54osg6o4vnt4fnwfqg8l6yn2xoo40qfn"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "Type": "Indoor Wall"
+            },
+            "geometry": {
+                "type": "Polygon",
+                "coordinates": [
+                    [
+                        [
+                            -81.2767135,
+                            43.0081575
+                        ],
+                        [
+                            -81.2767141,
+                            43.0081549
+                        ],
+                        [
+                            -81.2767015,
+                            43.0081535
+                        ],
+                        [
+                            -81.2767009,
+                            43.0081561
+                        ],
+                        [
+                            -81.2767135,
+                            43.0081575
+                        ]
+                    ]
+                ]
+            },
+            "id": "dv8c4odq9rrh6y00rv8dzx70njz0r1ne"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "Type": "Indoor Wall"
+            },
+            "geometry": {
+                "type": "Polygon",
+                "coordinates": [
+                    [
+                        [
+                            -81.2764795,
+                            43.0081285
+                        ],
+                        [
+                            -81.2764789,
+                            43.0081311
+                        ],
+                        [
+                            -81.2765355,
+                            43.0081385
+                        ],
+                        [
+                            -81.2765361,
+                            43.0081359
+                        ],
+                        [
+                            -81.2764795,
+                            43.0081285
+                        ]
+                    ]
+                ]
+            },
+            "id": "nflnt8k349b8ecuys75pkt0qkj2pikqc"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "Type": "Indoor Wall"
+            },
+            "geometry": {
+                "type": "Polygon",
+                "coordinates": [
+                    [
+                        [
+                            -81.2765319,
+                            43.0081381
+                        ],
+                        [
+                            -81.2765355,
+                            43.0081385
+                        ],
+                        [
+                            -81.2765381,
+                            43.0081269
+                        ],
+                        [
+                            -81.2765345,
+                            43.0081265
+                        ],
+                        [
+                            -81.2765319,
+                            43.0081381
+                        ]
+                    ]
+                ]
+            },
+            "id": "ww966ewwfe0j7bnfrh6h3zzo411shlu5"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "Type": "Outer Wall"
+            },
+            "geometry": {
+                "type": "Polygon",
+                "coordinates": [
+                    [
+                        [
+                            -81.2768194,
+                            43.0084692
+                        ],
+                        [
+                            -81.276825,
+                            43.0084688
+                        ],
+                        [
+                            -81.2768056,
+                            43.0083028
+                        ],
+                        [
+                            -81.2768,
+                            43.0083032
+                        ],
+                        [
+                            -81.2768194,
+                            43.0084692
+                        ]
+                    ]
+                ]
+            },
+            "id": "4ec6p06v739mt7xukm0il78fkedwc9ww"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "Type": "Outer Wall"
+            },
+            "geometry": {
+                "type": "Polygon",
+                "coordinates": [
+                    [
+                        [
+                            -81.2768052,
+                            43.0083074
+                        ],
+                        [
+                            -81.2768062,
+                            43.0083034
+                        ],
+                        [
+                            -81.2767468,
+                            43.0082956
+                        ],
+                        [
+                            -81.2767458,
+                            43.0082996
+                        ],
+                        [
+                            -81.2768052,
+                            43.0083074
+                        ]
+                    ]
+                ]
+            },
+            "id": "hat7evomuxi4izpmrwcyraswa5d0ejcb"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "Type": "Outer Wall"
+            },
+            "geometry": {
+                "type": "Polygon",
+                "coordinates": [
+                    [
+                        [
+                            -81.2767458,
+                            43.0082996
+                        ],
+                        [
+                            -81.2767512,
+                            43.0083004
+                        ],
+                        [
+                            -81.2767852,
+                            43.0081634
+                        ],
+                        [
+                            -81.2767798,
+                            43.0081626
+                        ],
+                        [
+                            -81.2767458,
+                            43.0082996
+                        ]
+                    ]
+                ]
+            },
+            "id": "i4e7h57so2b9r63543epyte3tjuq2zrk"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "Type": "Outer Wall"
+            },
+            "geometry": {
+                "type": "Polygon",
+                "coordinates": [
+                    [
+                        [
+                            -81.2767842,
+                            43.0081674
+                        ],
+                        [
+                            -81.2767852,
+                            43.0081634
+                        ],
+                        [
+                            -81.2767658,
+                            43.0081606
+                        ],
+                        [
+                            -81.2767648,
+                            43.0081646
+                        ],
+                        [
+                            -81.2767842,
+                            43.0081674
+                        ]
+                    ]
+                ]
+            },
+            "id": "xkcoxx39omfrautzbk98sahgkyd37z0f"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "Type": "Outer Wall"
+            },
+            "geometry": {
+                "type": "Polygon",
+                "coordinates": [
+                    [
+                        [
+                            -81.2767647,
+                            43.0081646
+                        ],
+                        [
+                            -81.2767701,
+                            43.0081654
+                        ],
+                        [
+                            -81.2767763,
+                            43.0081434
+                        ],
+                        [
+                            -81.2767709,
+                            43.0081426
+                        ],
+                        [
+                            -81.2767647,
+                            43.0081646
+                        ]
+                    ]
+                ]
+            },
+            "id": "rhtc4xcy6tfmxh9351qrkb9fqmvr4vmn"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "Type": "Outer Wall"
+            },
+            "geometry": {
+                "type": "Polygon",
+                "coordinates": [
+                    [
+                        [
+                            -81.2767752,
+                            43.0081473
+                        ],
+                        [
+                            -81.2767762,
+                            43.0081433
+                        ],
+                        [
+                            -81.2767318,
+                            43.0081377
+                        ],
+                        [
+                            -81.2767308,
+                            43.0081417
+                        ],
+                        [
+                            -81.2767752,
+                            43.0081473
+                        ]
+                    ]
+                ]
+            },
+            "id": "y0t0ln9fomimdmhafvicf285nz232xxg"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "Type": "Outer Wall"
+            },
+            "geometry": {
+                "type": "Polygon",
+                "coordinates": [
+                    [
+                        [
+                            -81.2767309,
+                            43.0081417
+                        ],
+                        [
+                            -81.2767363,
+                            43.0081423
+                        ],
+                        [
+                            -81.2767721,
+                            43.0079683
+                        ],
+                        [
+                            -81.2767667,
+                            43.0079677
+                        ],
+                        [
+                            -81.2767309,
+                            43.0081417
+                        ]
+                    ]
+                ]
+            },
+            "id": "mf41p4uti4oj1wfjgcsd3i7l5filimer"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "Type": "Outer Wall"
+            },
+            "geometry": {
+                "type": "Polygon",
+                "coordinates": [
+                    [
+                        [
+                            -81.2767712,
+                            43.0079723
+                        ],
+                        [
+                            -81.2767722,
+                            43.0079683
+                        ],
+                        [
+                            -81.2767268,
+                            43.0079627
+                        ],
+                        [
+                            -81.2767258,
+                            43.0079667
+                        ],
+                        [
+                            -81.2767712,
+                            43.0079723
+                        ]
+                    ]
+                ]
+            },
+            "id": "zgxrmncpwqk7kkiyjixcuxjujpgrh37p"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "Type": "Outer Wall"
+            },
+            "geometry": {
+                "type": "Polygon",
+                "coordinates": [
+                    [
+                        [
+                            -81.2767257,
+                            43.0079666
+                        ],
+                        [
+                            -81.2767311,
+                            43.0079674
+                        ],
+                        [
+                            -81.2767393,
+                            43.0079384
+                        ],
+                        [
+                            -81.2767339,
+                            43.0079376
+                        ],
+                        [
+                            -81.2767257,
+                            43.0079666
+                        ]
+                    ]
+                ]
+            },
+            "id": "yndlxh99y97xne45blcw13b6ivi78qzi"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "Type": "Outer Wall"
+            },
+            "geometry": {
+                "type": "Polygon",
+                "coordinates": [
+                    [
+                        [
+                            -81.2767382,
+                            43.0079423
+                        ],
+                        [
+                            -81.2767392,
+                            43.0079383
+                        ],
+                        [
+                            -81.2766458,
+                            43.0079267
+                        ],
+                        [
+                            -81.2766448,
+                            43.0079307
+                        ],
+                        [
+                            -81.2767382,
+                            43.0079423
+                        ]
+                    ]
+                ]
+            },
+            "id": "akd72f34kjuyf48dzolfd3q99pqt7pau"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "Type": "Outer Wall"
+            },
+            "geometry": {
+                "type": "Polygon",
+                "coordinates": [
+                    [
+                        [
+                            -81.2766512,
+                            43.0079274
+                        ],
+                        [
+                            -81.2766458,
+                            43.0079266
+                        ],
+                        [
+                            -81.2766388,
+                            43.0079546
+                        ],
+                        [
+                            -81.2766442,
+                            43.0079554
+                        ],
+                        [
+                            -81.2766512,
+                            43.0079274
+                        ]
+                    ]
+                ]
+            },
+            "id": "msirfaie0gwvv3z0t61v18e7uhwyamwt"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "Type": "Outer Wall"
+            },
+            "geometry": {
+                "type": "Polygon",
+                "coordinates": [
+                    [
+                        [
+                            -81.2766443,
+                            43.0079553
+                        ],
+                        [
+                            -81.2766451,
+                            43.0079513
+                        ],
+                        [
+                            -81.2765927,
+                            43.0079457
+                        ],
+                        [
+                            -81.2765919,
+                            43.0079497
+                        ],
+                        [
+                            -81.2766443,
+                            43.0079553
+                        ]
+                    ]
+                ]
+            },
+            "id": "dkf21pjeny6dyud6g5ybzoucijaoo4z7"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "Type": "Outer Wall"
+            },
+            "geometry": {
+                "type": "Polygon",
+                "coordinates": [
+                    [
+                        [
+                            -81.2765982,
+                            43.0079464
+                        ],
+                        [
+                            -81.2765928,
+                            43.0079456
+                        ],
+                        [
+                            -81.2765508,
+                            43.0081136
+                        ],
+                        [
+                            -81.2765562,
+                            43.0081144
+                        ],
+                        [
+                            -81.2765982,
+                            43.0079464
+                        ]
+                    ]
+                ]
+            },
+            "id": "xopswfyuiv5bgm4xet338nzuhya7l1w7"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "Type": "Outer Wall"
+            },
+            "geometry": {
+                "type": "Polygon",
+                "coordinates": [
+                    [
+                        [
+                            -81.2765562,
+                            43.0081143
+                        ],
+                        [
+                            -81.2765572,
+                            43.0081103
+                        ],
+                        [
+                            -81.2764858,
+                            43.0081017
+                        ],
+                        [
+                            -81.2764848,
+                            43.0081057
+                        ],
+                        [
+                            -81.2765562,
+                            43.0081143
+                        ]
+                    ]
+                ]
+            },
+            "id": "um5x1e13ugx46m29fbfp4ki7bftyi2il"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "Type": "Outer Wall"
+            },
+            "geometry": {
+                "type": "Polygon",
+                "coordinates": [
+                    [
+                        [
+                            -81.2764915,
+                            43.0081027
+                        ],
+                        [
+                            -81.2764861,
+                            43.0081015
+                        ],
+                        [
+                            -81.2764825,
+                            43.0081103
+                        ],
+                        [
+                            -81.2764879,
+                            43.0081115
+                        ],
+                        [
+                            -81.2764915,
+                            43.0081027
+                        ]
+                    ]
+                ]
+            },
+            "id": "nacc7h2aen7jq2zuail7nqoch6a63zy3"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "Type": "Room"
+            },
+            "geometry": {
+                "coordinates": [
+                    [
+                        [
+                            -81.276775,
+                            43.008192
+                        ],
+                        [
+                            -81.276726,
+                            43.008185
+                        ],
+                        [
+                            -81.276733,
+                            43.008159
+                        ],
+                        [
+                            -81.276781,
+                            43.008165
+                        ],
+                        [
+                            -81.276775,
+                            43.008192
+                        ]
+                    ]
+                ],
+                "type": "Polygon"
+            },
+            "id": "4b50ec63a22ffbc35b10ab2be358c812"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "Name": "Elevator 1"
+            },
+            "geometry": {
+                "coordinates": [
+                    -81.276649,
+                    43.008157
+                ],
+                "type": "Point"
+            },
+            "id": "51976eda447290536825470ff01f947b"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "Type": "Indoor Wall"
+            },
+            "geometry": {
+                "type": "Polygon",
+                "coordinates": [
+                    [
+                        [
+                            -81.2764505,
+                            43.0082515
+                        ],
+                        [
+                            -81.2764499,
+                            43.0082541
+                        ],
+                        [
+                            -81.2765055,
+                            43.0082615
+                        ],
+                        [
+                            -81.2765061,
+                            43.0082589
+                        ],
+                        [
+                            -81.2764505,
+                            43.0082515
+                        ]
+                    ]
+                ]
+            },
+            "id": "v0p1mv1c7yw5hiwltubdtxkjtfzzs7um"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "Type": "Indoor Wall"
+            },
+            "geometry": {
+                "type": "Polygon",
+                "coordinates": [
+                    [
+                        [
+                            -81.2765061,
+                            43.0082589
+                        ],
+                        [
+                            -81.2765025,
+                            43.0082585
+                        ],
+                        [
+                            -81.2764999,
+                            43.0082691
+                        ],
+                        [
+                            -81.2765035,
+                            43.0082695
+                        ],
+                        [
+                            -81.2765061,
+                            43.0082589
+                        ]
+                    ]
+                ]
+            },
+            "id": "nugajrdl53hy7z96zuoq5wosewgkta5r"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "Type": "Indoor Wall"
+            },
+            "geometry": {
+                "type": "Polygon",
+                "coordinates": [
+                    [
+                        [
+                            -81.2766299,
+                            43.0081681
+                        ],
+                        [
+                            -81.2766335,
+                            43.0081685
+                        ],
+                        [
+                            -81.2766391,
+                            43.0081459
+                        ],
+                        [
+                            -81.2766355,
+                            43.0081455
+                        ],
+                        [
+                            -81.2766299,
+                            43.0081681
+                        ]
+                    ]
+                ]
+            },
+            "id": "l3cs36t5ja24j3gcv4e2iytg2873hb08"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "Type": "Room"
+            },
+            "geometry": {
+                "coordinates": [
+                    [
+                        [
+                            -81.276734,
+                            43.008134
+                        ],
+                        [
+                            -81.276678,
+                            43.008126
+                        ],
+                        [
+                            -81.276684,
+                            43.008106
+                        ],
+                        [
+                            -81.276738,
+                            43.008113
+                        ],
+                        [
+                            -81.276734,
+                            43.008134
+                        ]
+                    ]
+                ],
+                "type": "Polygon"
+            },
+            "id": "59d9365d155e22cf6034a167461e4048"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "Type": "Indoor Wall"
+            },
+            "geometry": {
+                "type": "Polygon",
+                "coordinates": [
+                    [
+                        [
+                            -81.2766535,
+                            43.0081225
+                        ],
+                        [
+                            -81.2766541,
+                            43.0081199
+                        ],
+                        [
+                            -81.2765915,
+                            43.0081125
+                        ],
+                        [
+                            -81.2765909,
+                            43.0081151
+                        ],
+                        [
+                            -81.2766535,
+                            43.0081225
+                        ]
+                    ]
+                ]
+            },
+            "id": "hmk9pd28l3fzw5w8aht3ujzdjwb34s8z"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "Type": "Indoor Wall"
+            },
+            "geometry": {
+                "type": "Polygon",
+                "coordinates": [
+                    [
+                        [
+                            -81.2767754,
+                            43.0081936
+                        ],
+                        [
+                            -81.2767762,
+                            43.008191
+                        ],
+                        [
+                            -81.2767266,
+                            43.0081834
+                        ],
+                        [
+                            -81.2767258,
+                            43.008186
+                        ],
+                        [
+                            -81.2767754,
+                            43.0081936
+                        ]
+                    ]
+                ]
+            },
+            "id": "r84b7wbac7gjydhy8wcuihnavsj87jav"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "Type": "Elevator"
+            },
+            "geometry": {
+                "coordinates": [
+                    [
+                        [
+                            -81.276658,
+                            43.008167
+                        ],
+                        [
+                            -81.276639,
+                            43.008165
+                        ],
+                        [
+                            -81.276642,
+                            43.00815
+                        ],
+                        [
+                            -81.276661,
+                            43.008152
+                        ],
+                        [
+                            -81.276658,
+                            43.008167
+                        ]
+                    ]
+                ],
+                "type": "Polygon"
+            },
+            "id": "6a3367b48c41628ac38218423cbafac3"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "Type": "Stairwell"
+            },
+            "geometry": {
+                "coordinates": [
+                    [
+                        [
+                            -81.276555,
+                            43.008113
+                        ],
+                        [
+                            -81.276563,
+                            43.008075
+                        ],
+                        [
+                            -81.2766,
+                            43.00808
+                        ],
+                        [
+                            -81.276591,
+                            43.008117
+                        ],
+                        [
+                            -81.276555,
+                            43.008113
+                        ]
+                    ]
+                ],
+                "type": "Polygon"
+            },
+            "id": "6d5221a736c574fb3c82b15b2e1f5d4c"
+        },
+        {
+            "type": "Feature",
+            "properties": {},
+            "geometry": {
+                "coordinates": [
+                    [
+                        -81.276658,
+                        43.008335
+                    ],
+                    [
+                        -81.276662,
+                        43.008316
+                    ]
+                ],
+                "type": "LineString"
+            },
+            "id": "70a1e4c5a603efd6967c22cfe55adf05"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "Type": "Indoor Wall"
+            },
+            "geometry": {
+                "type": "Polygon",
+                "coordinates": [
+                    [
+                        [
+                            -81.2766051,
+                            43.0081419
+                        ],
+                        [
+                            -81.2766015,
+                            43.0081415
+                        ],
+                        [
+                            -81.2765959,
+                            43.0081641
+                        ],
+                        [
+                            -81.2765995,
+                            43.0081645
+                        ],
+                        [
+                            -81.2766051,
+                            43.0081419
+                        ]
+                    ]
+                ]
+            },
+            "id": "i1rl32ow9j4xxhg9mmfalex8d0uq1jgb"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "Type": "Indoor Wall"
+            },
+            "geometry": {
+                "type": "Polygon",
+                "coordinates": [
+                    [
+                        [
+                            -81.2765965,
+                            43.0081615
+                        ],
+                        [
+                            -81.2765959,
+                            43.0081641
+                        ],
+                        [
+                            -81.2767085,
+                            43.0081785
+                        ],
+                        [
+                            -81.2767091,
+                            43.0081759
+                        ],
+                        [
+                            -81.2765965,
+                            43.0081615
+                        ]
+                    ]
+                ]
+            },
+            "id": "gmu6doq86fxvh8nkfoepz7tepfkl29n7"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "Type": "Indoor Wall"
+            },
+            "geometry": {
+                "type": "Polygon",
+                "coordinates": [
+                    [
+                        [
+                            -81.2765535,
+                            43.0081115
+                        ],
+                        [
+                            -81.2765529,
+                            43.0081141
+                        ],
+                        [
+                            -81.2765725,
+                            43.0081165
+                        ],
+                        [
+                            -81.2765731,
+                            43.0081139
+                        ],
+                        [
+                            -81.2765535,
+                            43.0081115
+                        ]
+                    ]
+                ]
+            },
+            "id": "0mkx8p8xli4v8jz0kwi16o6v0xdbdxlf"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "Type": "Room"
+            },
+            "geometry": {
+                "coordinates": [
+                    [
+                        [
+                            -81.27656,
+                            43.008381
+                        ],
+                        [
+                            -81.276522,
+                            43.008375
+                        ],
+                        [
+                            -81.276542,
+                            43.008291
+                        ],
+                        [
+                            -81.27658,
+                            43.008295
+                        ],
+                        [
+                            -81.27656,
+                            43.008381
+                        ]
+                    ]
+                ],
+                "type": "Polygon"
+            },
+            "id": "8aa3d52174206e7e7c891ed2d903eece"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "Type": "Room"
+            },
+            "geometry": {
+                "coordinates": [
+                    [
+                        [
+                            -81.276754,
+                            43.008269
+                        ],
+                        [
+                            -81.276748,
+                            43.008297
+                        ],
+                        [
+                            -81.276701,
+                            43.008291
+                        ],
+                        [
+                            -81.276708,
+                            43.008263
+                        ],
+                        [
+                            -81.276754,
+                            43.008269
+                        ]
+                    ]
+                ],
+                "type": "Polygon"
+            },
+            "id": "90948ebb2b18d5fd0517f966eb6a0a4d"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "Type": "Indoor Wall"
+            },
+            "geometry": {
+                "type": "Polygon",
+                "coordinates": [
+                    [
+                        [
+                            -81.2765905,
+                            43.0081635
+                        ],
+                        [
+                            -81.2765911,
+                            43.0081609
+                        ],
+                        [
+                            -81.2765725,
+                            43.0081585
+                        ],
+                        [
+                            -81.2765719,
+                            43.0081611
+                        ],
+                        [
+                            -81.2765905,
+                            43.0081635
+                        ]
+                    ]
+                ]
+            },
+            "id": "ju17i4svls6vklaxorv835g2wk3cacug"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "Type": "Indoor Wall"
+            },
+            "geometry": {
+                "type": "Polygon",
+                "coordinates": [
+                    [
+                        [
+                            -81.2765719,
+                            43.0081611
+                        ],
+                        [
+                            -81.2765755,
+                            43.0081615
+                        ],
+                        [
+                            -81.2765811,
+                            43.0081379
+                        ],
+                        [
+                            -81.2765775,
+                            43.0081375
+                        ],
+                        [
+                            -81.2765719,
+                            43.0081611
+                        ]
+                    ]
+                ]
+            },
+            "id": "i1u0rn1mv07751ixh6hu13qe1ww5ij3i"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "Type": "Indoor Wall"
+            },
+            "geometry": {
+                "type": "Polygon",
+                "coordinates": [
+                    [
+                        [
+                            -81.2765776,
+                            43.0081374
+                        ],
+                        [
+                            -81.2765768,
+                            43.00814
+                        ],
+                        [
+                            -81.2766154,
+                            43.0081456
+                        ],
+                        [
+                            -81.2766162,
+                            43.008143
+                        ],
+                        [
+                            -81.2765776,
+                            43.0081374
+                        ]
+                    ]
+                ]
+            },
+            "id": "6zg2pi12wevwbf4rgmqeccyg3tylrcyc"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "Type": "Indoor Wall"
+            },
+            "geometry": {
+                "type": "Polygon",
+                "coordinates": [
+                    [
+                        [
+                            -81.2766881,
+                            43.00826
+                        ],
+                        [
+                            -81.2766845,
+                            43.0082594
+                        ],
+                        [
+                            -81.2766769,
+                            43.008289
+                        ],
+                        [
+                            -81.2766805,
+                            43.0082896
+                        ],
+                        [
+                            -81.2766881,
+                            43.00826
+                        ]
+                    ]
+                ]
+            },
+            "id": "i4mjipz0lzz9qqxoyr7gnov8efp7yqlb"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "Type": "Room"
+            },
+            "geometry": {
+                "coordinates": [
+                    [
+                        [
+                            -81.276755,
+                            43.008268
+                        ],
+                        [
+                            -81.276708,
+                            43.008263
+                        ],
+                        [
+                            -81.276726,
+                            43.008185
+                        ],
+                        [
+                            -81.276775,
+                            43.008192
+                        ],
+                        [
+                            -81.276755,
+                            43.008268
+                        ]
+                    ]
+                ],
+                "type": "Polygon"
+            },
+            "id": "9b209ed9c7691777506fe6a474c797d8"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "Type": "Room"
+            },
+            "geometry": {
+                "coordinates": [
+                    [
+                        [
+                            -81.276724,
+                            43.008357
+                        ],
+                        [
+                            -81.276734,
+                            43.008314
+                        ],
+                        [
+                            -81.276751,
+                            43.008317
+                        ],
+                        [
+                            -81.276742,
+                            43.00836
+                        ],
+                        [
+                            -81.276724,
+                            43.008357
+                        ]
+                    ]
+                ],
+                "type": "Polygon"
+            },
+            "id": "9e176f12eaaeb8d84af88b527c3ab8ce"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "Type": "Indoor Wall"
+            },
+            "geometry": {
+                "type": "Polygon",
+                "coordinates": [
+                    [
+                        [
+                            -81.2766708,
+                            43.008173
+                        ],
+                        [
+                            -81.2766744,
+                            43.0081736
+                        ],
+                        [
+                            -81.2766812,
+                            43.008152
+                        ],
+                        [
+                            -81.2766776,
+                            43.0081514
+                        ],
+                        [
+                            -81.2766708,
+                            43.008173
+                        ]
+                    ]
+                ]
+            },
+            "id": "wkk1m9sh1q2vjj7ylpo5r28vra3xzuwr"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "Type": "Indoor Wall"
+            },
+            "geometry": {
+                "type": "Polygon",
+                "coordinates": [
+                    [
+                        [
+                            -81.2766465,
+                            43.0081495
+                        ],
+                        [
+                            -81.2766471,
+                            43.0081469
+                        ],
+                        [
+                            -81.2766285,
+                            43.0081445
+                        ],
+                        [
+                            -81.2766279,
+                            43.0081471
+                        ],
+                        [
+                            -81.2766465,
+                            43.0081495
+                        ]
+                    ]
+                ]
+            },
+            "id": "kz8qemix144fdzdt3qfbp1pxms33i0l3"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "Type": "Indoor Wall"
+            },
+            "geometry": {
+                "type": "Polygon",
+                "coordinates": [
+                    [
+                        [
+                            -81.2767355,
+                            43.0081355
+                        ],
+                        [
+                            -81.2767361,
+                            43.0081329
+                        ],
+                        [
+                            -81.2766765,
+                            43.0081255
+                        ],
+                        [
+                            -81.2766759,
+                            43.0081281
+                        ],
+                        [
+                            -81.2767355,
+                            43.0081355
+                        ]
+                    ]
+                ]
+            },
+            "id": "6xyi7myge79i7ogzjojclq1h1w2a7peo"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "Type": "Indoor Wall"
+            },
+            "geometry": {
+                "type": "Polygon",
+                "coordinates": [
+                    [
+                        [
+                            -81.2766759,
+                            43.0081281
+                        ],
+                        [
+                            -81.2766795,
+                            43.0081285
+                        ],
+                        [
+                            -81.2766851,
+                            43.0081039
+                        ],
+                        [
+                            -81.2766815,
+                            43.0081035
+                        ],
+                        [
+                            -81.2766759,
+                            43.0081281
+                        ]
+                    ]
+                ]
+            },
+            "id": "tithni2yo8iuf3cmt2qzgrbs8s8qpsre"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "Type": "Indoor Wall"
+            },
+            "geometry": {
+                "type": "Polygon",
+                "coordinates": [
+                    [
+                        [
+                            -81.2766815,
+                            43.0081035
+                        ],
+                        [
+                            -81.2766809,
+                            43.0081061
+                        ],
+                        [
+                            -81.2767405,
+                            43.0081135
+                        ],
+                        [
+                            -81.2767411,
+                            43.0081109
+                        ],
+                        [
+                            -81.2766815,
+                            43.0081035
+                        ]
+                    ]
+                ]
+            },
+            "id": "enjh3bkwzkzsx4018uhmncby3ctzupqx"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "Type": "Room"
+            },
+            "geometry": {
+                "coordinates": [
+                    [
+                        [
+                            -81.276598,
+                            43.008162
+                        ],
+                        [
+                            -81.276575,
+                            43.008159
+                        ],
+                        [
+                            -81.27658,
+                            43.00814
+                        ],
+                        [
+                            -81.276603,
+                            43.008142
+                        ],
+                        [
+                            -81.276598,
+                            43.008162
+                        ]
+                    ]
+                ],
+                "type": "Polygon"
+            },
+            "id": "b85006461059c9187b344a7d2d496df4"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "Type": "Indoor Wall"
+            },
+            "geometry": {
+                "type": "Polygon",
+                "coordinates": [
+                    [
+                        [
+                            -81.2766915,
+                            43.0081555
+                        ],
+                        [
+                            -81.2766921,
+                            43.0081529
+                        ],
+                        [
+                            -81.2766575,
+                            43.0081485
+                        ],
+                        [
+                            -81.2766569,
+                            43.0081511
+                        ],
+                        [
+                            -81.2766915,
+                            43.0081555
+                        ]
+                    ]
+                ]
+            },
+            "id": "4dmwuywqguk7c90lry12i3lhqv5zc2fe"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "Type": "Glass Wall"
+            },
+            "geometry": {
+                "type": "Polygon",
+                "coordinates": [
+                    [
+                        [
+                            -81.2765539,
+                            43.0082616
+                        ],
+                        [
+                            -81.2765557,
+                            43.0082618
+                        ],
+                        [
+                            -81.2765811,
+                            43.0081604
+                        ],
+                        [
+                            -81.2765793,
+                            43.0081602
+                        ],
+                        [
+                            -81.2765539,
+                            43.0082616
+                        ]
+                    ]
+                ]
+            },
+            "id": "oj4khekpkifl7ufwee0v868yovo9yyn1"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "Type": "Indoor Wall"
+            },
+            "geometry": {
+                "type": "Polygon",
+                "coordinates": [
+                    [
+                        [
+                            -81.2767599,
+                            43.0083641
+                        ],
+                        [
+                            -81.2767635,
+                            43.0083645
+                        ],
+                        [
+                            -81.2767741,
+                            43.0083179
+                        ],
+                        [
+                            -81.2767705,
+                            43.0083175
+                        ],
+                        [
+                            -81.2767599,
+                            43.0083641
+                        ]
+                    ]
+                ]
+            },
+            "id": "zwbw5jg5vsi542xiu3sm2n22xy4hndbn"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "Type": "Indoor Wall"
+            },
+            "geometry": {
+                "type": "Polygon",
+                "coordinates": [
+                    [
+                        [
+                            -81.2767695,
+                            43.0083265
+                        ],
+                        [
+                            -81.2767689,
+                            43.0083291
+                        ],
+                        [
+                            -81.2768055,
+                            43.0083335
+                        ],
+                        [
+                            -81.2768061,
+                            43.0083309
+                        ],
+                        [
+                            -81.2767695,
+                            43.0083265
+                        ]
+                    ]
+                ]
+            },
+            "id": "ro177kxspjqpvz4soah9pfhj9jr543mv"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "Type": "Indoor Wall"
+            },
+            "geometry": {
+                "type": "Polygon",
+                "coordinates": [
+                    [
+                        [
+                            -81.2767504,
+                            43.0082996
+                        ],
+                        [
+                            -81.2767512,
+                            43.008297
+                        ],
+                        [
+                            -81.2766986,
+                            43.0082894
+                        ],
+                        [
+                            -81.2766978,
+                            43.008292
+                        ],
+                        [
+                            -81.2767504,
+                            43.0082996
+                        ]
+                    ]
+                ]
+            },
+            "id": "n32ar772fwn8n636oztc3pq5merk5ern"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "Type": "Indoor Wall"
+            },
+            "geometry": {
+                "type": "Polygon",
+                "coordinates": [
+                    [
+                        [
+                            -81.2766979,
+                            43.0082921
+                        ],
+                        [
+                            -81.2767015,
+                            43.0082925
+                        ],
+                        [
+                            -81.2767341,
+                            43.0081569
+                        ],
+                        [
+                            -81.2767305,
+                            43.0081565
+                        ],
+                        [
+                            -81.2766979,
+                            43.0082921
+                        ]
+                    ]
+                ]
+            },
+            "id": "5rty85dgol8sozot8kkt7qs3v5qdszjh"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "Type": "Indoor Wall"
+            },
+            "geometry": {
+                "type": "Polygon",
+                "coordinates": [
+                    [
+                        [
+                            -81.2767306,
+                            43.0081564
+                        ],
+                        [
+                            -81.2767298,
+                            43.008159
+                        ],
+                        [
+                            -81.2767814,
+                            43.0081666
+                        ],
+                        [
+                            -81.2767822,
+                            43.008164
+                        ],
+                        [
+                            -81.2767306,
+                            43.0081564
+                        ]
+                    ]
+                ]
+            },
+            "id": "2m5s869973m13ga11z3uarjl5ubbe9zi"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "Type": "Indoor Wall"
+            },
+            "geometry": {
+                "type": "Polygon",
+                "coordinates": [
+                    [
+                        [
+                            -81.2767575,
+                            43.0082705
+                        ],
+                        [
+                            -81.2767581,
+                            43.0082679
+                        ],
+                        [
+                            -81.2767055,
+                            43.0082615
+                        ],
+                        [
+                            -81.2767049,
+                            43.0082641
+                        ],
+                        [
+                            -81.2767575,
+                            43.0082705
+                        ]
+                    ]
+                ]
+            },
+            "id": "y0lv99hbcr5po2m6wq3z1yoz1w2aosmg"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "Type": "Room"
+            },
+            "geometry": {
+                "coordinates": [
+                    [
+                        [
+                            -81.276616,
+                            43.008375
+                        ],
+                        [
+                            -81.276564,
+                            43.008368
+                        ],
+                        [
+                            -81.276571,
+                            43.008339
+                        ],
+                        [
+                            -81.276622,
+                            43.008346
+                        ],
+                        [
+                            -81.276616,
+                            43.008375
+                        ]
+                    ]
+                ],
+                "type": "Polygon"
+            },
+            "id": "cd49449e85c119601c1afcb8d305f25c"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "Type": "Inaccessible"
+            },
+            "geometry": {
+                "coordinates": [
+                    [
+                        [
+                            -81.276673,
+                            43.008172
+                        ],
+                        [
+                            -81.27666,
+                            43.00817
+                        ],
+                        [
+                            -81.276666,
+                            43.008151
+                        ],
+                        [
+                            -81.276678,
+                            43.008153
+                        ],
+                        [
+                            -81.276673,
+                            43.008172
+                        ]
+                    ]
+                ],
+                "type": "Polygon"
+            },
+            "id": "cdaa6d7b9d12ab00a906aa2fe6a9f88e"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "Type": "Inaccessible"
+            },
+            "geometry": {
+                "coordinates": [
+                    [
+                        [
+                            -81.276673,
+                            43.008351
+                        ],
+                        [
+                            -81.276635,
+                            43.008346
+                        ],
+                        [
+                            -81.276638,
+                            43.008332
+                        ],
+                        [
+                            -81.276677,
+                            43.008337
+                        ],
+                        [
+                            -81.276673,
+                            43.008351
+                        ]
+                    ]
+                ],
+                "type": "Polygon"
+            },
+            "id": "d54e9ecf1cd2a1b3cec5872c2ce69948"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "Type": "Elevator"
+            },
+            "geometry": {
+                "coordinates": [
+                    [
+                        [
+                            -81.276627,
+                            43.008163
+                        ],
+                        [
+                            -81.276631,
+                            43.008148
+                        ],
+                        [
+                            -81.276609,
+                            43.008146
+                        ],
+                        [
+                            -81.276606,
+                            43.00816
+                        ],
+                        [
+                            -81.276627,
+                            43.008163
+                        ]
+                    ]
+                ],
+                "type": "Polygon"
+            },
+            "id": "d5d0ff9896d0b408d2b34ce3e1c3c7a5"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "Type": "Glass Wall"
+            },
+            "geometry": {
+                "type": "Polygon",
+                "coordinates": [
+                    [
+                        [
+                            -81.2765618,
+                            43.0082928
+                        ],
+                        [
+                            -81.276562,
+                            43.0082914
+                        ],
+                        [
+                            -81.2765392,
+                            43.0082892
+                        ],
+                        [
+                            -81.276539,
+                            43.0082906
+                        ],
+                        [
+                            -81.2765618,
+                            43.0082928
+                        ]
+                    ]
+                ]
+            },
+            "id": "7t4923b1kogpbru44k23lnbzi3vj7zjw"
+        },
+        {
+            "type": "Feature",
+            "properties": {},
+            "geometry": {
+                "coordinates": [
+                    [
+                        -81.276669,
+                        43.008317
+                    ],
+                    [
+                        -81.276655,
+                        43.008315
+                    ]
+                ],
+                "type": "LineString"
+            },
+            "id": "df46fb078608a44322f712dd7e253767"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "Type": "Inaccessible"
+            },
+            "geometry": {
+                "coordinates": [
+                    [
+                        [
+                            -81.276605,
+                            43.008298
+                        ],
+                        [
+                            -81.276582,
+                            43.008295
+                        ],
+                        [
+                            -81.276571,
+                            43.008339
+                        ],
+                        [
+                            -81.276596,
+                            43.008342
+                        ],
+                        [
+                            -81.276605,
+                            43.008298
+                        ]
+                    ]
+                ],
+                "type": "Polygon"
+            },
+            "id": "e89bea63d5768bafb5b407353755eca7"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "Type": "Indoor Wall"
+            },
+            "geometry": {
+                "type": "Polygon",
+                "coordinates": [
+                    [
+                        [
+                            -81.2765685,
+                            43.0083505
+                        ],
+                        [
+                            -81.2765691,
+                            43.0083479
+                        ],
+                        [
+                            -81.2765275,
+                            43.0083425
+                        ],
+                        [
+                            -81.2765269,
+                            43.0083451
+                        ],
+                        [
+                            -81.2765685,
+                            43.0083505
+                        ]
+                    ]
+                ]
+            },
+            "id": "nhkstr4hm0dslyg0j20goqtqc3n7xcpy"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "Type": "Indoor Wall"
+            },
+            "geometry": {
+                "type": "Polygon",
+                "coordinates": [
+                    [
+                        [
+                            -81.2766626,
+                            43.0081204
+                        ],
+                        [
+                            -81.2766618,
+                            43.008123
+                        ],
+                        [
+                            -81.2766794,
+                            43.0081256
+                        ],
+                        [
+                            -81.2766802,
+                            43.008123
+                        ],
+                        [
+                            -81.2766626,
+                            43.0081204
+                        ]
+                    ]
+                ]
+            },
+            "id": "yic892z8856m8aibb32gdm6tfnajaktp"
+        }
+    ]
+}

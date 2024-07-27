@@ -3,28 +3,24 @@ import Mapbox from '@rnmapbox/maps';
 import { heightStyles } from '../../../styles/MBXFloorStyles';
 
 const generateArrowCoordinates = (center, size, ratio, heading) => {
-  const arrowHeadLength = size * 2;
-  const arrowShaftLength = size * 1.5;
-  const arrowShaftWidth = size * 0.5;
-  const arrowHeadWidth = size * 1;
-
+  const arrowBottomIndent = size / 6;
+  const arrowLength = size;
+  const arrowWidth = size / 4;
 
   const coords = [
-    [center[0], center[1] + arrowHeadWidth],                        // Arrow head right
-    [center[0] + arrowHeadLength, center[1]],                       // Arrow head center
-    [center[0], center[1] - arrowHeadWidth],                        // Arrow head left 
-    [center[0], center[1] - arrowShaftWidth / 2],                   // Shaft left bottom
-    [center[0] - arrowShaftLength, center[1] - arrowShaftWidth / 2],// Shaft bottom left
-    [center[0] - arrowShaftLength, center[1] + arrowShaftWidth / 2],// Shaft top left
-    [center[0], center[1] + arrowShaftWidth / 2],                   // Shaft right bottom
-    [center[0], center[1] + arrowHeadWidth]                         // Closing the polygon
+    [center[0], center[1]],                                   // Arrow middle                    
+    [center[0] - arrowBottomIndent, center[1] - arrowWidth],  // Arrow bottom left 
+    [center[0] + arrowLength, center[1]],                     // Arrow tip
+    [center[0] - arrowBottomIndent, center[1] + arrowWidth],  // Arrow bottom right
+    [center[0], center[1]],                                   // Closing the polygon
   ];
-
-  // Rotate the coordinates based on the heading
+ 
+  
+  // Rotate the coordinates based on the heading 
   const radHeading = (heading * Math.PI) / 180;
   const cosHeading = Math.cos(radHeading);
   const sinHeading = Math.sin(radHeading);
-
+  
   const rotatedCoords = coords.map(coord => {
     const dx = (coord[0] - center[0]) / ratio;
     const dy = coord[1] - center[1];
@@ -37,10 +33,10 @@ const generateArrowCoordinates = (center, size, ratio, heading) => {
 };
 
 const CustomPuck = ({ floor, userFloor, coordinates, heading }) => {
-  const opacity = floor === userFloor ? 1 : 0.5;
+  const opacity = floor === userFloor ? 1 : 0.35;
   const height = heightStyles[floor.toString()].floor;
-  const arrowRadius = 0.000005; // Adjust radius as needed
-  const latLonRatio = 1/0.73; // Ratio of latitude to longitude distances
+  const arrowRadius = 0.00002; // Arrow size
+  const latLonRatio = 1/0.73;   // Ratio of latitude to longitude distances
   const arrowCoordinates = generateArrowCoordinates(coordinates, arrowRadius, latLonRatio, -heading + 90);
 
   const extrusionLayer = {
@@ -62,8 +58,8 @@ const CustomPuck = ({ floor, userFloor, coordinates, heading }) => {
       }
     },
     paint: {
-      'fillExtrusionColor': '#ff0000',
-      'fillExtrusionHeight': height + 0.1,
+      'fillExtrusionColor': '#067EE5',
+      'fillExtrusionHeight': height + 1,
       'fillExtrusionBase': height - 0.4,
       'fillExtrusionOpacity': opacity,
     }

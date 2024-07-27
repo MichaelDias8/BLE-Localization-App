@@ -4,7 +4,89 @@
     {
       "type": "Feature",
       "properties": {
-        "Name": "Womens Bathroom"
+        "Name": "Elevator",
+        "Long": -81.276618,
+        "Lat": 43.008156
+      },
+      "geometry": {
+        "coordinates": [
+          -81.276618,
+          43.008156
+        ],
+        "type": "Point"
+      },
+      "id": "2c11b99e54cce02666bf1e80771dcedd"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Unisex Bathroom",
+        "Long": -81.276695,
+        "Lat": 43.008166
+      },
+      "geometry": {
+        "coordinates": [
+          -81.276695,
+          43.008166
+        ],
+        "type": "Point"
+      },
+      "id": "2ee0002a5fd17304a756f11531f0d8f9"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Mens Bathroom",
+        "Long": -81.276622,
+        "Lat": 43.008323
+      },
+      "geometry": {
+        "coordinates": [
+          -81.276622,
+          43.008323
+        ],
+        "type": "Point"
+      },
+      "id": "2fbcdf87fe5583b12a700078d05a9f96"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Stairs",
+        "Long": -81.276577,
+        "Lat": 43.008096
+      },
+      "geometry": {
+        "coordinates": [
+          -81.276577,
+          43.008096
+        ],
+        "type": "Point"
+      },
+      "id": "3e7841393ddc630062fda8406535bf9c"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Elevator",
+        "Long": -81.276653,
+        "Lat": 43.008161
+      },
+      "geometry": {
+        "coordinates": [
+          -81.276653,
+          43.008161
+        ],
+        "type": "Point"
+      },
+      "id": "51976eda447290536825470ff01f947b"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Womens Bathroom",
+        "Long": -81.276707,
+        "Lat": 43.008334
       },
       "geometry": {
         "coordinates": [

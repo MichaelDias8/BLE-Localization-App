@@ -3,7 +3,7 @@ import { StyleSheet } from 'react-native';
 export default styles = StyleSheet.create({
     floorControlContainer: {
       position: 'absolute',
-      bottom: 420,
+      bottom: 65,
       left: 20,
       alignItems: 'center',
     },
