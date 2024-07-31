@@ -34,14 +34,12 @@ export const calculatePosition = (referencePoints, distancesObject, userLine, us
   
   return estimatedPosition;
 }
-
 function estimatePosition(intersectionPoints, userCoordinates) {
   // Calculate the average of the intersection points
   const averagePoint = intersectionPoints.reduce((acc, curr) => [acc[0] + curr[0], acc[1] + curr[1]]).map(coord => coord / intersectionPoints.length);
 
   return averagePoint;
 }
-
 function intersectCirclesWithLine(referencePoints, distances, line, userCoordinates) {
   const intersectionPoints = [];
 

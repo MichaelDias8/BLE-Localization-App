@@ -5,7 +5,7 @@ requestBluetoothPermission();
 import styles from './src/styles/layoutStyles';
 // PACKAGE IMPORTS
 import { point } from '@turf/helpers';
-import { getCoords, destination, distance, bearing as turfBearing } from '@turf/turf';
+import { destination, distance, bearing as turfBearing } from '@turf/turf';
 import Mapbox from '@rnmapbox/maps';
 Mapbox.setAccessToken('pk.eyJ1Ijoic3dhZHppIiwiYSI6ImNseWYzcHFjeDA0YnkyanBya3ExM2hiazMifQ.uSpLcW2LozymWvzI3NR2pw');
 import * as Location from 'expo-location';
@@ -16,10 +16,11 @@ import { BleManager } from 'react-native-ble-plx';
 // UTILITY IMPORTS
 import { NavigationModule } from './src/utilities/nav/NavigationModule';
 import { graph, printGraph } from './src/utilities/nav/navigationUtilities'
-import { rssiToDistance, initBeaconCoords, } from './src/utilities/beacons/beaconUtilities';
-import { dtBLE, dtAPI } from './src/utilities/kalman-filter/kalmanFilterSettings';
-import { filterRSSI, updateKFWithBLE, updateKFWithAPI } from './src/utilities/kalman-filter/kalmanFilterHelpers';
+import { initBeaconCoords, beaconAdvFreq } from './src/utilities/beacons/beaconUtilities';
+import { filterRSSI, dtAPI, dtKF, updateKF } from './src/utilities/kalman-filter/kalmanFilterHelpers';
 // COMPONENT IMPORTS
+import AltitudeMonitor from './src/components/background/AltitudeMonitor';
+import GraphEdges from './src/components/map/static/GraphEdges';
 import CustomPuck from './src/components/map/dynamic/CustomPuck';
 import NavigationPath from './src/components/map/dynamic/NavigationPath';
 import StaticMapComponents from './src/components/map/static/StaticMapComponents';
@@ -32,8 +33,10 @@ import FloorControlButtons from './src/components/ui/SwitchFloorUI';
 // GLOBAL
 const bleManager = new BleManager();
 const navigationManager = new NavigationModule(graph.edges, graph.nodes); 
-const testPath = navigationManager.dijkstra("-1A", "-1E");
+const testPath = navigationManager.dijkstra("-1G", "-1E");
+console.log("Test Path: ", testPath);
 
+// Set the user to halfway between the first two nodes
 const initDistToNextNode = distance(point(testPath[1].coordinates), point(testPath[2].coordinates), { units: 'meters' }) / 2;
 const initUserCoords = destination(point(testPath[1].coordinates), initDistToNextNode / 1000, turfBearing(point(testPath[1].coordinates), point(testPath[2].coordinates))).geometry.coordinates;
 
@@ -44,7 +47,8 @@ export default function App() {
   const userCoordinatesRef = useRef(userCoordinates);                                // Ref for User coordinates
   const [userFloor, setUserFloor] = useState(-1);                                    // Users floor
   const userFloorRef = useRef(userFloor);                                            // Ref for users floor
-  const [heading, setHeading] = useState(0);                                         // Users heading
+  const [userHeading, setUserHeading] = useState(0);                                 // Users heading
+  const userHeadingRef = useRef(userHeading);                                        // Ref for users heading
   const [correctedPosition, setCorrectedPosition] = useState([0, 0]);                // KF Corrected coordinates
   const [measuredPosition, setMeasuredPosition] = useState([0, 0]);                  // Measured coordinates
   const [APICoordinates, setAPICoordinates] = useState(null);                        // Coordinates from Apple API
@@ -55,6 +59,7 @@ export default function App() {
   const nextNodeRef = useRef(nextNode);                                              // Ref for next node
   const [prevNode, setPrevNode] = useState(testPath[1].id)                           // Previous Node in Navigation Path
   const prevNodeRef = useRef(prevNode);                                              // Ref for previous node
+  const lastPathChangeTimeRef = useRef(performance.now());                           // Ref for last path change time
   // Beacons         
   const [selectedBeacon, setSelectedBeacon] = useState(null);                        // Selected beacon for adjusting coordinates
   const [zCoordinate, setZCoordinate] = useState('');                                // Z coordinate for selected beacon
@@ -80,6 +85,7 @@ export default function App() {
   useEffect(() => { APICoordinatesRef.current = APICoordinates }, [APICoordinates]);
   useEffect(() => { beaconCoordsRef.current = beaconCoords }, [beaconCoords]);
   useEffect(() => { userCoordinatesRef.current = userCoordinates }, [userCoordinates]);
+  useEffect(() => { userHeadingRef.current = userHeading }, [userHeading]);
   //#endregion
   // #region EFFECTS
   // Start BLE scanning
@@ -91,23 +97,17 @@ export default function App() {
       bleManager.stopDeviceScan();
     };
   }, []);
-  // Start Kalman Filtering with BLE
+  // Start Kalman Filter
   useEffect(() => {
     const interval = setInterval(() => {
-      //updateKFWithBLE(filteredRSSIsRef.current, beaconCoordsRef.current, userFloorRef.current, userCoordinatesRef.current, setUserCoordinates, setMeasuredPosition, setCorrectedPosition, nextNode, setNextNode);
-    }, dtBLE * 1000);
+      updateKF(beaconCoordsRef.current, filteredRSSIsRef.current, APICoordinatesRef.current, userHeadingRef.current, setMeasuredPosition, setCorrectedPosition, setUserCoordinates, prevNodeRef.current, nextNodeRef.current, moveToNextNode);
+    }, dtKF * 1000);
 
     // Clear interval on component unmount
     return () => {
       clearInterval(interval);
     };
   }, []);
-  // Start Kalman Filtering with API
-  useEffect(() => {
-    if(APICoordinatesRef.current) {
-      updateKFWithAPI(APICoordinatesRef.current, setMeasuredPosition, setCorrectedPosition, setUserCoordinates, prevNodeRef.current, setPrevNode, nextNodeRef.current, setNextNode);
-    }
-  }, [APICoordinates]);
   // Start retrieving location and heading from API
   useEffect(() => {
     let locationSubscription;
@@ -128,7 +128,7 @@ export default function App() {
         );
 
         headingSubscription = await Location.watchHeadingAsync((headingData) => {
-          setHeading(headingData.trueHeading);
+          setUserHeading(headingData.trueHeading);
         });
       })();
     }
@@ -149,6 +149,7 @@ export default function App() {
         const savedCoords = await AsyncStorage.getItem('beaconCoords');
         if (savedCoords) {
           setBeaconCoords(JSON.parse(savedCoords));
+          console.log('Loaded beacon coordinates:', JSON.parse(savedCoords));
         } else {
           setBeaconCoords(initBeaconCoords);
         }
@@ -184,28 +185,20 @@ export default function App() {
         // Update the beacons RSSI and timestamp
         RSSIsRef.current[id] = device.rssi;
         beaconLastAdvTimeRef.current[id] = performance.now();
-
-        // Filter the distance using the Kalman Filter
-        const filteredValue = filterRSSI(id, RSSIsRef.current[id], filteredRSSIsRef.current[id], beaconLastAdvTimeRef.current[id]);
-        if (filteredValue !== undefined) {
-          filteredRSSIsRef.current[id] = filteredValue;
-        }
       }
     });
 
-    // Stop and restart scanning every 190ms second to ensure continuous updates on iOS
+    // Stop and restart scanning every {beaconAdvFreq - 10}ms second to ensure continuous updates on iOS
     setTimeout(() => {
       bleManager.stopDeviceScan();
       receiveBLEAdvertisments();
-    }, 190);
+    }, (beaconAdvFreq * 1000) - 10);
   };
-
   const handleBeaconSelect = (beaconId) => {
     setSelectedBeacon(beaconId);
     const zValue = beaconCoords[beaconId][2] != null ? beaconCoords[beaconId][2].toString() : '';
     setZCoordinate(zValue);
   };
-
   const handleStyleChange = (useLayerStyle) => {
 
     // Override console.error to suppress Mapbox errors
@@ -224,6 +217,15 @@ export default function App() {
       console.error = originalConsoleError; // Restore the original console.error method
     }, 1000); // Allow time for style change and possible errors
   };
+  const moveToNextNode = () => {
+    const nextNodeIndex = navigationPath.findIndex(node => node.id === nextNode);
+    if ((nextNodeIndex < navigationPath.length - 1) && lastPathChangeTimeRef.current + 5000 < performance.now()) {
+      lastPathChangeTimeRef.current = performance.now();
+      setPrevNode(navigationPath[nextNodeIndex].id);
+      setNextNode(navigationPath[nextNodeIndex + 1].id);
+      console.log('Moved to next node:', nextNode);
+    }
+  }
   //#endregion
 
   return (
@@ -244,8 +246,9 @@ export default function App() {
         }}
       >
         <NavigationPath navigationPath={navigationPath} floor={floor} nextNode={nextNode} userCoordinates={userCoordinates} />
+        <GraphEdges floor={floor} />
 
-        <CustomPuck floor={floor} userFloor={userFloor} coordinates={userCoordinates} heading={heading} />
+        <CustomPuck floor={floor} userFloor={userFloor} coordinates={userCoordinates} heading={userHeading} />
 
         {APICoordinates && (
           <Mapbox.MarkerView
@@ -280,16 +283,11 @@ export default function App() {
         )}
 
         <BeaconMarkers beaconCoords={beaconCoords} beaconLastAdvTime={beaconLastAdvTimeRef.current} selectedBeacon={selectedBeacon} handleBeaconSelect={handleBeaconSelect} />
-        
-        {useLayerStyle && ( <StaticMapComponents floor={floor} pitch={mapPitch} zoom={mapZoom} bearing={mapBearing} center={mapCenter}/> )}
-        
+        {/*useLayerStyle && ( <StaticMapComponents floor={floor} pitch={mapPitch} zoom={mapZoom} bearing={mapBearing} center={mapCenter}/> )*/}
         <Mapbox.Camera zoomLevel={19} centerCoordinate={[-81.312396521, 43.014162449]} animationDuration={4000} animationMode={'flyTo'} />
-        
       </Mapbox.MapView>
 
       <FloorControlButtons floor={floor} setFloor={setFloor} useLayerStyle={useLayerStyle} setUseLayerStyle={handleStyleChange} />
-
-      <SearchUI setShowCompass={setShowCompass} />
 
       <ControlBeaconUI
         selectedBeacon={selectedBeacon}
@@ -300,13 +298,18 @@ export default function App() {
         setZCoordinate={setZCoordinate}
         zCoordinate={zCoordinate}
       />
-
-      {/*<View style={styles.debugTextContainer}> 
+      
+      <AltitudeMonitor />
+    
+      <View style={styles.debugTextContainer}> 
         <Text style={styles.debugTextStyle}>
+          UserPosition: {userCoordinates[0].toFixed(6)}, {userCoordinates[1].toFixed(6)} {"\n"}
           Pitch: {mapPitch.toFixed(6)} {"\n"}
           Zoom: {mapZoom.toFixed(6)} {"\n"}
+          NextNode: {nextNode} {"\n"}
+          PrevNode: {prevNode} {"\n"}
         </Text>
-      </View>*/}
+      </View>
     </View>
   );
 }

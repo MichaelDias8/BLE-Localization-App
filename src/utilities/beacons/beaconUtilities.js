@@ -1,13 +1,14 @@
 export const beaconUUIDs = [ "275792", "275848", "275849", "275851", "275854", "275857", "275871", "275873" ];
+
 export const initBeaconCoords = {
-  "275792": [-81.27661, 43.00829, 0],
-  "275848": [-81.27661, 43.00828, 0],
-  "275849": [-81.27661, 43.00827, 0],
-  "275851": [-81.27661, 43.00826, 0],
-  "275854": [-81.27661, 43.00825, 0],
-  "275857": [-81.27661, 43.00824, 0],
-  "275871": [-81.27661, 43.00823, 0],
-  "275873": [-81.27661, 43.00822, 0], 
+  "275792": [-81.27661, 43.00829, 0], 
+  "275848": [-81.27661, 43.00828, 0], 
+  "275849": [-81.27661, 43.00827, 0], 
+  "275851": [-81.27661, 43.00826, 0], 
+  "275854": [-81.27661, 43.00825, 0], 
+  "275857": [-81.2766044548153, 43.008255008361886, 0], 
+  "275871": [-81.27661, 43.00823, 0], 
+  "275873": [-81.27661, 43.00822, 0]
 };
 
 export const initBeaconFloors = {
@@ -21,13 +22,10 @@ export const initBeaconFloors = {
   "275873": 0,
 };
 
-// EMPIRICALLY DERIVED VALUES
-export const beaconVariance = 2;
-export const beaconAdvFreq = 200;     // Beacon advertising frequency in ms
+export const beaconAdvFreq = 0.2;
+
 const RSSISAT1M = -59; 
-const PATHLOSS = 2.2;        
-
-
+const PATHLOSS = 2.2; 
 export const rssiToDistance = (BeaconRSSIVals) => {
   // If the input is a single value, return the distance
   if (typeof BeaconRSSIVals !== 'object') {
